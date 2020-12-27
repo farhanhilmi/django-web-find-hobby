@@ -5,14 +5,17 @@
 <!-- <img src="https://wallpapercave.com/wp/wp6312868.jpg" class="img-fluid" alt="Responsive image"> -->
 
 <section class="section-pencarian" style="margin-top: 150px;">
-    <div class="pencarian mx-auto">
-        <!-- <div class=" card-body"> -->
+    <form action="{% url 'pencarian_url'%}" method="POST">
+        {% csrf_token %}
+        <div class="pencarian mx-auto">
+            <!-- <div class=" card-body"> -->
 
-        <label for="cari" class="fas fa-search mr-2 mt-2 ml-2"></label>
-        <input name="cari" placeholder="Cari hobby kamu disini" />
-
-        <!-- </div> -->
-    </div>
+            <label for="cari" class="fas fa-search mr-2 mt-2 ml-2"></label>
+            <input name="cari" class="cariInput" placeholder="Cari hobby kamu disini" />
+            <!-- <input type="submit" value="Cari" /> -->
+            <!-- </div> -->
+        </div>
+    </form>
 </section>
 
 <div class="list-event mt-5">

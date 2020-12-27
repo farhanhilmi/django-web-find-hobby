@@ -69,7 +69,8 @@ def home_page(request):
 
 
 @login_required(login_url='login_page')
-def cari_page(request, name):
+def cari_page(request):
+    name = request.POST['cari']
     page_title = "Pencarian"
     events = ListEvent.objects.filter(
         name__contains=name).order_by('-date_created')
