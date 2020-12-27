@@ -16,19 +16,26 @@
         <label for="cari" class="fas fa-search mr-2 mt-2 ml-2"></label>
         <input name="cari" placeholder="Cari hobby kamu disini" />
 
+
+
         <!-- </div> -->
+    </div>
+    <div class="mx-auto mt-5">
+        <button type="button" class="btn btn-info btn-tambah" data-toggle="modal" data-target="#tambahforum">
+            Buat Forum
+        </button>
     </div>
 </section>
 
-<div class="list-forum mt-5">
+
+
+<div class="list-forum mt-1">
     <h3 class="mb-0">Forum Diskusi Terbaru</h3>
     <small>Diskusikan hobbi anda</small>
     <div class="row mt-4" id="data-forum">
-        <form action="{% url 'forum_update_url' forum.instance.pk %}" method="POST" class="js-forum-update-form">
-            {% csrf_token %}
 
-            {% include 'user/forum/list_data_forum.html' %}
-        </form>
+
+        {% include 'user/forum/list_data_forum.html' %}
 
     </div>
 </div>
@@ -38,5 +45,42 @@
     <input name="cari" id="cari" />
 </div> -->
 
+<!-- Modal -->
+<div class="modal fade" id="tambahforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'list_forum' %}" method="post">
+                <div class="modal-body">
+
+                    {% csrf_token %}
+                    <label for="topic">Topic:</label>
+                    {{form.topic}}
+                    <label for="desc">Description:</label>
+                    {{form.description}}
+
+                    <label for="cat">Category:</label>
+                    <select name="name" class="form-control" id="cat">
+                        {% for ct in category %}
+                        <option value='{{ct.name}}'>{{ ct.name }}</option>
+                        {% endfor %}
+                    </select>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-sm btn-info" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

@@ -18,6 +18,36 @@ class FormForum(forms.ModelForm):
         widgets = {
             # 'user_id': forms.TextInput(attrs={'class': 'form-control', 'value': get_user_id()}),
             'topic': forms.TextInput(attrs={'class': 'form-control'}),
-            'category': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'user_id': forms.TextInput(attrs={'type': 'hidden'}),
+            # 'category': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+        }
+
+
+class FormForum(forms.ModelForm):
+    class Meta:
+        model = ListForum
+        fields = '__all__'
+        exclude = ['date_created', 'num_like', 'num_comment']
+        widgets = {
+            # 'user_id': forms.TextInput(attrs={'class': 'form-control', 'value': get_user_id()}),
+            'topic': forms.TextInput(attrs={'class': 'form-control'}),
+            'user_id': forms.TextInput(attrs={'type': 'hidden'}),
+            # 'category': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+        }
+
+
+class updateLikeForm(forms.ModelForm):
+    class Meta:
+        model = ListForum
+        fields = ['num_like']
+
+
+class CreateInDiscussion(ModelForm):
+    class Meta:
+        model = ForumDiscussion
+        fields = ['discuss', 'user_id', 'forum_id']
+        widgets = {
+            "discuss": Textarea(attrs={'cols': 5, 'rows': 3, 'placeholder': "Tuangkan opini anda disini", 'class': 'input-komentar'}),
         }

@@ -6,59 +6,53 @@
 <div class="list-forum" style="margin-top: 100px;">
     <h3 class="mb-0">Forum</h3>
     <div class="row mt-4">
+        {% for frm in forum %}
         <div class="col-12 mb-3">
             <div class="card-deck">
                 <!-- 4 of these -->
                 <div class="card">
                     <div class="card-body">
+                        <h5 class="card-title mb-0">{{frm.topic}}
+                            {% if frm.user_id.id == user.id %}
+                            <a href=""><span class="badge badge-warning badge-pill"><small>edit</small></span></a>
+                            <a href=""><span class="badge badge-danger badge-pill"><small>hapus</small></span></a>
+                            {% endif %}
+                        </h5>
 
-                        <h5 class="card-title mb-0">Card title</h5>
-                        <small>by: Farhan Hilmi</small> | <small>On 23 Feb 2020</small> <br>
+                        <small>by: {{frm.user_id.first_name}} {{frm.user_id.last_name}}</small> | <small>On 23 Feb
+                            2020</small> <br>
                         <p class="mt-4">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam magnam esse perferendis
-                            temporibus nemo maiores pariatur beatae necessitatibus facere cum ad et, architecto ut
-                            facilis eaque porro earum. Suscipit voluptatum aliquam assumenda quidem culpa tempora
-                            delectus similique, fugiat vitae iusto earum, repellendus, minus dolore! Iusto, ipsa
-                            asperiores exercitationem adipisci veniam ipsam id, rerum velit nisi, facere dolore saepe
-                            nemo cupiditate accusantium possimus vel dolores blanditiis voluptas? Sint placeat quo
-                            fugiat recusandae quae ea earum ex libero cumque obcaecati amet autem, alias consequatur
-                            nostrum officia eos id dolorem hic voluptatum voluptate est dicta maxime iusto nulla!
-                            Laborum, vel, sint minima incidunt vitae repudiandae at porro ex molestiae deleniti harum?
-                            Voluptas rerum, neque ex iure porro illo perspiciatis. Accusamus provident dignissimos alias
-                            impedit aspernatur corporis iusto voluptates unde voluptas eos non ratione sint obcaecati,
-                            recusandae in commodi. Sed, tenetur dolor totam iste eius pariatur autem? Doloremque
-                            perspiciatis animi, quidem ea illum itaque voluptates reiciendis aspernatur earum, molestias
-                            eligendi? Repellat blanditiis adipisci at consectetur perspiciatis sint dolore nihil.
-                            Ratione quibusdam iure nemo quam nobis aut veritatis modi id, sapiente culpa vero. Saepe,
-                            unde. Rerum praesentium nostrum nam asperiores laudantium ea, magni, corporis ducimus
-                            voluptas quia doloribus quibusdam sit laboriosam. Tempora nostrum obcaecati nobis. Eligendi,
-                            enim recusandae expedita tenetur odio, veniam voluptatum quod, earum magni error ut ullam
-                            dolorem dolore cum accusamus nihil perferendis aperiam aut culpa non velit. Quas eius dolor
-                            modi, beatae deserunt quibusdam fuga, recusandae quaerat unde eum esse vitae? Odit,
-                            quibusdam. Eum, et impedit fugit culpa quas fuga voluptates, ipsam commodi quae nisi
-                            adipisci repellendus at aut animi rem tempore facilis, illo consequatur molestias labore
-                            vitae quo ullam sit. Assumenda voluptates hic recusandae sint numquam accusamus dolores
-                            quaerat voluptatem! Excepturi dolor earum dolorem reprehenderit animi perferendis
-                            voluptatibus officia laborum temporibus ratione fuga velit unde quis, tenetur doloribus
-                            possimus voluptate asperiores!
+                            {{frm.description}}
                         </p>
-                        <a href="#" class="badge tag-forum mt-4">Football</a>
+                        <a href="#" class="badge tag-forum mt-4">{{frm.category}}</a>
                         <div class="ml-1 mt-3 row">
                             <div class="comment-forum mr-3">
                                 <i class="fas fa-comment-dots mt-1 ml-3" style="color: #f0b67f;"></i><small
-                                    class="ml-1">20</small>
+                                    class="ml-1">{{frm.num_comment}}</small>
                             </div>
+
                             <div class="comment-forum">
-                                <a href="">
+
+                                <!-- <form action="{% url 'like_forum_url' frm.id %}" id="formLike" method="post">
+                                    {% csrf_token %} -->
+                                <a id="btn_like" href="{% url 'like_forum_url' frm.id %}">
                                     <i class="fas fa-heart mt-1 ml-3" style="color: #fe5f55;"></i><small
-                                        class="ml-1">20</small>
+                                        class="ml-1">{{frm.num_like}}</small>
                                 </a>
+                                <!-- </form> -->
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        {% endfor %}
+        <!-- <script>
+            document.getElementById("btn_like").onclick = function () {
+                document.getElementById("formLike").submit();
+            }
+        </script> -->
 
         <div class="col-10 mb-3 mx-auto">
             <div class="card-deck">
@@ -68,9 +62,11 @@
 
                         <h5>Komentar</h5>
                         <div class="tambah-komentar">
-                            <form action="">
-                                <textarea class="input-komentar" placeholder="Tuangkan opini anda disini"
-                                    cols="5"></textarea>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                {{form.discuss}}
+                                <!-- <textarea class="input-komentar" placeholder="Tuangkan opini anda disini"
+                                    cols="5"></textarea> -->
                                 <br>
                                 <input type="submit" value="Kirim" class="btn btn-sm btn-info float-right">
                             </form>
@@ -81,41 +77,30 @@
             </div>
         </div>
 
+
+
         <div class="col-12 mb-3">
-            <div class="card-deck">
+            <h5>Diskusi</h5>
+            {% for cmt in comment %}
+            <div class="card-deck mb-3">
                 <!-- 4 of these -->
                 <div class="card">
                     <div class="card-body">
 
-                        <h5>Diskusi</h5>
+
                         <div class="mb-0">
-                            <a href="#" class="badge tag-forum">@farhanhilmi</a> | <small>23 Feb 2020</small>
+                            <a href="#" class="badge tag-forum">@{{cmt.user_id.username}}</a> |
+                            <small>{{cmt.date_created}}</small>
                             <div class="ml-1 mr-1 mt-0 row">
-                                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, natus.</p>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <a href="#" class="badge tag-forum">@farhanhilmi</a> | <small>23 Feb 2020</small>
-                            <div class="ml-1 mr-1 mt-0 row">
-                                <p class="">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, natus.</p>
-                            </div>
-                        </div>
-                        <div class="mb-0">
-                            <a href="#" class="badge tag-forum">@farhanhilmi</a> | <small>23 Feb 2020</small>
-                            <div class="ml-1 mr-1 mt-0 row">
-                                <p class="">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore dolor culpa
-                                    aperiam expedita sapiente officiis. Explicabo, dolorem labore suscipit soluta
-                                    provident neque porro sunt deleniti, ea libero nihil quaerat delectus nisi iure
-                                    fugiat vero ab dicta commodi enim rem blanditiis! Voluptatibus saepe corporis fugit
-                                    aliquam numquam, iusto provident quasi inventore?
-                                </p>
+                                <p class="">{{cmt.discuss}}</p>
                             </div>
                         </div>
 
                     </div>
                 </div>
             </div>
+            {% endfor %}
+
         </div>
 
 
@@ -126,6 +111,9 @@
     <label for="cari" class="fas fa-search"></label>
     <input name="cari" id="cari" />
 </div> -->
+
+
+
 
 
 {% endblock %}

@@ -61,7 +61,10 @@ def logout_page(request):
 @login_required(login_url='login_page')
 def home_page(request):
     page_title = "Home"
-    context = {'page_title': page_title}
+    events = ListEvent.objects.all().order_by('-date_created')
+    forum = ListForum.objects.all().order_by('-date_created')
+
+    context = {'page_title': page_title, 'events': events, 'forum': forum}
     return render(request, 'user/home.html', context)
 
 
@@ -69,82 +72,96 @@ def home_page(request):
 def list_forum(request):
     page_title = "List Forum"
     forum = ListForum.objects.all()
-    return render(request, 'user/forum/list-forum.html', {'forum': forum, 'page_title': page_title})
 
-
-@login_required(login_url='login_page')
-def save_forum_form(request, form, template_name):
-    data = dict()
+    # form = FormForum()
+    form = FormForum()
+    category = ListCategory.objects.all()
     if request.method == 'POST':
-        if form.is_valid():
-            # form.user_id = User.objects.get(id=request.user.id)
-            form.save()
-            data['form_is_valid'] = True
-            forum = ListForum.objects.all()
-            data['html_list_forum'] = render_to_string('user/forum/list_data_forum.html', {
-                'forum': forum
-            })
-        else:
-            data['form_is_valid'] = False
-    context = {'form': form}
-    data['html_form'] = render_to_string(
-        template_name, context, request=request)
-    return JsonResponse(data)
-
-
-@login_required(login_url='login_page')
-def forum_add(request):
-    if request.method == 'POST':
+        # comment = updateCommentForm(request.POST, instance=forums)
         form = FormForum(request.POST)
-    else:
-        form = FormForum()
-    return save_forum_form(request, form, 'user/forum/forum_create.html')
+        if form.is_valid():
+            # dataComment = comment.save()
+            data = form.save()
+            # dataComment.num_comment = forums.num_comment + 1
+            data.user_id = User.objects.get(id=request.user.id)
+            ct = request.POST['name']
+            data.category = ct
+            # dataComment.save()
+            data.save()
+
+            return redirect('list_forum')
+
+    return render(request, 'user/forum/list-forum.html', {'category': category, 'forum': forum, 'page_title': page_title, 'form': form})
 
 
-@login_required(login_url='login_page')
-def forum_update(request, pk):
-    forum = get_object_or_404(ListTask, pk=pk)
-    if request.method == 'POST':
-        form = FormForum(request.POST, instance=forum)
-    else:
-        form = FormForum(instance=forum)
-    return save_tugas_form(request, form, 'user/forum/update_forum.html')
-
-
-@login_required(login_url='login_page')
-def forum_delete(request, pk):
-    forum = get_object_or_404(ListTask, pk=pk)
-    data = dict()
-    if request.method == 'POST':
-        forum.delete()
-        data['form_is_valid'] = True
-        forum = ListForum.objects.all()
-        data['html_list_forum'] = render_to_string('user/forum/list_data_forum.html', {
-            'forum': forum
-        })
-    else:
-        context = {'forum': forum}
-        data['html_form'] = render_to_string(
-            'user/forum/delete_forum.html', context, request=request)
-    return JsonResponse(data)
-
-
-@login_required(login_url='login_page')
-def detail_forum(request):
+@ login_required(login_url='login_page')
+def detail_forum(request, id):
     page_title = "Detail Forum"
-    context = {'page_title': page_title}
+    forum = ListForum.objects.filter(id=id)
+    comment = ForumDiscussion.objects.filter(forum_id=id)
+
+    form = CreateInDiscussion()
+    if request.method == 'POST':
+        # comment = updateCommentForm(request.POST, instance=forums)
+        form = CreateInDiscussion(request.POST)
+        if form.is_valid():
+            # dataComment = comment.save()
+            comment = ListForum.objects.get(id=id)
+            comment.num_comment = comment.num_comment + 1
+            comment.save()
+            data = form.save()
+            # dataComment.num_comment = forums.num_comment + 1
+            data.forum_id = ListForum.objects.get(id=id)
+            data.user_id = User.objects.get(id=request.user.id)
+
+            # dataComment.save()
+            data.save()
+
+            return redirect('detail_forum_url', id=id)
+
+    context = {'page_title': page_title, 'forum': forum,
+               'comment': comment, 'form': form}
     return render(request, 'user/forum/detail-forum.html', context)
 
 
-@login_required(login_url='login_page')
+@ login_required(login_url='login')
+def likePost(request, id):
+    forum = ListForum.objects.get(id=id)
+    forum.num_like = forum.num_like + 1
+    forum.save()
+
+    return redirect('detail_forum_url', id=id)
+
+
+@ login_required(login_url='login_page')
 def list_event(request):
     page_title = "List Event"
-    context = {'page_title': page_title}
+    events = ListEvent.objects.all()
+
+    context = {'events': events,
+               'page_title': page_title}
     return render(request, 'user/event/list-event.html', context)
 
 
 @login_required(login_url='login_page')
-def detail_event(request):
+def detail_event(request, id):
     page_title = "Detail Event"
-    context = {'page_title': page_title}
+    events = ListEvent.objects.filter(id=id)
+    context = {'page_title': page_title, 'events': events}
     return render(request, 'user/event/detail-event.html', context)
+
+
+@login_required(login_url='login')
+def hadirEvent(request, id):
+    event = ListEvent.objects.get(id=id)
+    event.kuota = event.kuota - 1
+    event.save()
+
+    # hd = HadirEvent
+    # hd.event_id = event.id
+    # hd.user_id = request.user.id
+    # hd.name = event.name
+
+    # hd.save()
+
+    return redirect('user/event/detail-event.html', id=id)

@@ -42,16 +42,19 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'list_event_url' %}">Event</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Contact Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">About Us</a>
-                        </li>
-
-                        <li class="nav-item" style="margin-right: 0 !important;">
+                        <!-- <li class="nav-item" style="margin-right: 0 !important;">
                             <a class="nav-link" href="#" style="color:#fe5f55;"><i
                                     class="far fa-user-circle fa-lg"></i></a>
+                        </li> -->
+                        <li class="nav-item dropdown" style="margin-right: 0 !important;">
+                            <a style="color:#fe5f55;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="far fa-user-circle fa-lg"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                                <a class="dropdown-item" href="{% url 'logout_page' %}">Logout</a>
+                            </div>
                         </li>
                     </ul>
                 </div>

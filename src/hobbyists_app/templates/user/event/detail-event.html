@@ -7,87 +7,56 @@
     <h3 class="mb-0">Event</h3>
     <div class="row mt-4 ">
         <div class="col-12 mb-3">
+            {% for event in events %}
             <div class="card-deck">
                 <!-- 4 of these -->
                 <div class="card">
+
                     <div class="card-body">
-                        <img src="https://www.sportirelandcampus.ie/sites/default/files/styles/widescreen_television/public/2020-08/badminton.jpg?h=d0ca09fb&itok=n2RfCCB9"
-                            class="float-left mr-4">
-                        <a href="#" class="badge tag-forum mt-0">Football</a>
-                        <h4 class="card-title mb-0 mt-0">Gali Potensi Internet Marketing</h4>
-                        <small>by: @farhanhilmi | Indosat Oredoo</small> <br>
-                        <p class="mt-5 mb-0">13 Maret 2020 - 20 Maret 2020 | 19.00</p>
+                        <img src="../../{{event.image}}" class="float-left mr-4">
+                        <a href="#" class="badge tag-forum mt-0">{{event.category}}</a>
+                        <h4 class="card-title mb-0 mt-0">{{event.name}}</h4>
+                        <small>by: @{{event.user_id.username}} | {{event.penyelenggara}}</small> <br>
+                        <p class="mt-5 mb-0">{{event.start_time.date}} - {{event.end_time.date}} |
+                            {{event.start_time.time}} - {{event.end_time.time}}</p>
                         <div class="mt-0 mb-5">
                             <i class="fas fa-map-marker-alt" style="color:#fe5f55;"></i>
-                            <small class="card-text ml-2">This is a kdakd adj adjkajdjkadjaja little bit
-                                longer.</small><br>
-                            <small class="ml-4">Bandung Working Space</small>
+                            <small class="card-text ml-2">{{event.alamat}}</small><br>
+                            <small class="ml-4">{{event.tempat}}</small>
                         </div>
 
 
                         <div class="row mt-5">
                             <h6>Kouta Tersedia: </h6>
                             <span class="badge badge-pill ml-2"
-                                style="background-color: white; padding:6px; box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.1);">900</span>
+                                style="background-color: white; padding:6px; box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.1);">{{event.kuota}}</span>
                         </div>
                         <!-- <div class="col-5 text-center mt-3"> -->
-                        <button class="btn btn-info btn-detail mt-2">Hadiri Event</button>
+                        <a href="{% url 'hadirEvent' event.id %}" class="btn btn-info btn-detail mt-2">Hadiri Event</a>
                         <!-- </div> -->
-                        <p class="mt-5">87 Orang akan menghadiri event ini.</p>
+                        <!-- <p class="mt-5">87 Orang akan menghadiri event ini.</p> -->
 
-                        <p class="mt-4 float-left mb-5">
-                            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Totam magnam esse perferendis
-                            temporibus nemo maiores pariatur beatae necessitatibus facere cum ad et, architecto ut
-                            facilis eaque porro earum. Suscipit voluptatum aliquam assumenda quidem culpa tempora
-                            delectus similique, fugiat vitae iusto earum, repellendus, minus dolore! Iusto, ipsa
-                            asperiores exercitationem adipisci veniam ipsam id, rerum velit nisi, facere dolore
-                            saepe
-                            nemo cupiditate accusantium possimus vel dolores blanditiis voluptas? Sint placeat quo
-                            fugiat recusandae quae ea earum ex libero cumque obcaecati amet autem, alias consequatur
-                            nostrum officia eos id dolorem hic voluptatum voluptate est dicta maxime iusto nulla!
-                            Laborum, vel, sint minima incidunt vitae repudiandae at porro ex molestiae deleniti
-                            harum?
-                            Voluptas rerum, neque ex iure porro illo perspiciatis. Accusamus provident dignissimos
-                            alias
-                            impedit aspernatur corporis iusto voluptates unde voluptas eos non ratione sint
-                            obcaecati,
-                            recusandae in commodi. Sed, tenetur dolor totam iste eius pariatur autem? Doloremque
-                            perspiciatis animi, quidem ea illum itaque voluptates reiciendis aspernatur earum,
-                            molestias
-                            eligendi? Repellat blanditiis adipisci at consectetur perspiciatis sint dolore nihil.
-                            Ratione quibusdam iure nemo quam nobis aut veritatis modi id, sapiente culpa vero.
-                            Saepe,
-                            unde. Rerum praesentium nostrum nam asperiores laudantium ea, magni, corporis ducimus
-                            voluptas quia doloribus quibusdam sit laboriosam. Tempora nostrum obcaecati nobis.
-                            Eligendi,
-                            enim recusandae expedita tenetur odio, veniam voluptatum quod, earum magni error ut
-                            ullam
-                            dolorem dolore cum accusamus nihil perferendis aperiam aut culpa non velit. Quas eius
-                            dolor
-                            modi, beatae deserunt quibusdam fuga, recusandae quaerat unde eum esse vitae? Odit,
-                            quibusdam. Eum, et impedit fugit culpa quas fuga voluptates, ipsam commodi quae nisi
-                            adipisci repellendus at aut animi rem tempore facilis, illo consequatur molestias labore
-                            vitae quo ullam sit. Assumenda voluptates hic recusandae sint numquam accusamus dolores
-                            quaerat voluptatem! Excepturi dolor earum dolorem reprehenderit animi perferendis
-                            voluptatibus officia laborum temporibus ratione fuga velit unde quis, tenetur doloribus
-                            possimus voluptate asperiores!
+                        <p class="mt-4 mb-5">
+                            {{event.description}}
                         </p>
-                        <div>
+                        <div class="float-left">
                             <h5>Contact</h5>
                             <span class="badge badge-secondary mt-2"><i class="fas fa-laptop-code"></i>
-                                www.fami.com
+                                {{event.contact_website}}
                             </span>
                             <span class="badge badge-danger"><i class="fas fa-envelope-square"></i>
-                                fahan@gmail.com
+                                {{event.contact_email}}
                             </span>
                             <span class="badge badge-info"><i class="fas fa-phone-square-alt"></i>
-                                0989797
+                                {{event.contact_hp}}
                             </span>
                         </div>
 
                     </div>
+
                 </div>
             </div>
+            {% endfor %}
         </div>
 
 
