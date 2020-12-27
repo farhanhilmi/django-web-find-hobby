@@ -19,7 +19,7 @@
 </section>
 
 <div class="discuss-forum mt-5">
-    <h3 class="mb-0">Latest Forum Discuss</h3>
+    <h3 class="mb-0">Pencarian Forum Discuss</h3>
     <small>Diskusikan hobbi anda</small>
     <div class="row mt-4">
         {% for frm in forum|slice:":6" %}
@@ -52,7 +52,7 @@
 </div>
 
 <div class="list-event mt-5">
-    <h3 class="mb-0">Latest Event</h3>
+    <h3 class="mb-0">Pencarian Event</h3>
     <small>Hadiri event untuk salurkan minat anda</small>
     <div class="row mt-4">
         {% for event in events|slice:":6" %}
@@ -61,7 +61,7 @@
                 <!-- 4 of these -->
                 <div class="card">
                     <span class="notify-badge">{{event.category}}</span>
-                    <img class="card-img-top" src="{{event.image}}" alt="Card image cap">
+                    <img class="card-img-top" src="../../{{event.image}}" alt="Card image cap">
                     <div class="tgl-info">
                         <!-- <p class="tgl">13</p> -->
                         <p class="bulan">{{event.start_time.date}}</p>
