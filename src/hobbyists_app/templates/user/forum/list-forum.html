@@ -1,0 +1,42 @@
+{% extends 'user\layout\main.html' %}
+{% load static %}
+
+{% block content %}
+
+
+{% block javascript %}
+<script src="{% static 'js/forum.js' %}"></script>
+{% endblock %}
+<!-- <img src="https://wallpapercave.com/wp/wp6312868.jpg" class="img-fluid" alt="Responsive image"> -->
+
+<section class="section-pencarian" style="margin-top: 150px;">
+    <div class="pencarian mx-auto">
+        <!-- <div class=" card-body"> -->
+
+        <label for="cari" class="fas fa-search mr-2 mt-2 ml-2"></label>
+        <input name="cari" placeholder="Cari hobby kamu disini" />
+
+        <!-- </div> -->
+    </div>
+</section>
+
+<div class="list-forum mt-5">
+    <h3 class="mb-0">Forum Diskusi Terbaru</h3>
+    <small>Diskusikan hobbi anda</small>
+    <div class="row mt-4" id="data-forum">
+        <form action="{% url 'forum_update_url' forum.instance.pk %}" method="POST" class="js-forum-update-form">
+            {% csrf_token %}
+
+            {% include 'user/forum/list_data_forum.html' %}
+        </form>
+
+    </div>
+</div>
+
+<!-- <div class="form-group">
+    <label for="cari" class="fas fa-search"></label>
+    <input name="cari" id="cari" />
+</div> -->
+
+
+{% endblock %}

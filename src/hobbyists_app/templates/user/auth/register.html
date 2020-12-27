@@ -1,0 +1,163 @@
+{% extends './base.html' %}
+{% load socialaccount %}
+{% providers_media_js %}
+{% block content %}
+
+<div class="container h-100">
+    <div class="d-flex justify-content-center h-100">
+        <div class="user_card">
+            <div class="d-flex justify-content-center ">
+                <h4 id="form-title" class="font-weight-bold">Scheduler</h4>
+            </div>
+            <div class="login_title d-flex justify-content-left">
+                <h6>Sign Up</h6>
+            </div>
+            <!-- {% for message in messages %}
+                <p id="messages">{{message}}</p>
+                {% endfor %} -->
+            <div class="d-flex justify-content-center form_container">
+                <!-- REGISTER FORM -->
+                <form method="POST" action="" id="formRegister" autocomplete="off" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <!-- <input type="text" name="username" placeholder="Username" class="form-control" required> -->
+                        {{form.username}}
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                        </div>
+                        <!-- <input type="email" name="email" placeholder="Email" class="form-control" required> -->
+                        {{form.first_name}}
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                        </div>
+                        <!-- <input type="email" name="email" placeholder="Email" class="form-control" required> -->
+                        {{form.last_name}}
+                    </div>
+
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                        </div>
+                        <!-- <input type="email" name="email" placeholder="Email" class="form-control" required> -->
+                        {{form.email}}
+                    </div>
+
+
+
+                    <div class="input-group mb-0">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+
+                        {{form.password1}}
+                    </div>
+                    <small class="font-weight-bold mt-0" id="passLong"></small>
+                    <div class="input-group mb-0 mt-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <!-- <input type="password" id="password2" name="password2" placeholder="Re-Enter Password"
+                            class="form-control border" required> -->
+                        {{form.password2}}
+                    </div>
+                    <small class="font-weight-bold" id="CheckPasswordMatch"></small>
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <input class="btn login_btn" type="submit" id="btnRegister" value="Register">
+                    </div>
+                    <!-- <div class="invalid-feedback" id="CheckPasswordMatch">
+                        Please provide a valid city.
+                    </div> -->
+                    {{form.errors}}
+                    <small class="create_account form-text text-muted mb-0 mt-3 ">
+                        Already have account? <a id="loginPageBtn" href="{% url 'login_page' %}">Login Here</a>
+                    </small>
+                </form>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-center mt-3 login_container">
+                <a href="{% provider_login_url 'facebook' method='oauth2' %}"
+                    class="btn social_login fb_login font-weight-bold ">
+                    <i class="fab fa-facebook-square"></i>Log In with Facebook
+                </a>
+            </div>
+            <div class="d-flex justify-content-center mt-2 login_container">
+                <a href="{% provider_login_url 'google' %}" class="btn social_login google_login font-weight-bold ">
+                    <i class="fab fa-google"></i>Log In with Google
+                </a>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    <script>
+        let btnRegister = $('#btnRegister');
+        let pass1 = $("#password1");
+        let pass2 = $("#password2");
+        function checkPasswordMatch() {
+            var password = pass1.val();
+            var confirmPassword = pass2.val();
+            if (password != confirmPassword) {
+                // btnRegister.prop('disabled', true);
+                pass1.addClass("border-danger");
+                pass2.addClass("border-danger");
+                $("#CheckPasswordMatch").addClass("text-danger");
+                $("#CheckPasswordMatch").html("Passwords does not match!");
+                return false
+            } else {
+                pass1.removeClass("border-danger");
+                pass2.removeClass("border-danger");
+                pass1.addClass("border-success");
+                pass2.addClass("border-success");
+                $("#CheckPasswordMatch").removeClass("text-danger");
+                $("#CheckPasswordMatch").addClass("text-success");
+                $("#CheckPasswordMatch").html("Passwords match.");
+                // btnRegister.prop('disabled', false);
+                console.log(pass1.val());
+                return true
+            }
+        }
+
+        function checkPassLong() {
+            if ($(pass1).val().length < 8) {
+                $("#passLong").addClass("text-danger");
+                $("#passLong").html("This password is to short!. at least 8 characters");
+                return false
+            } else {
+                $("#passLong").removeClass("text-danger");
+                $("#passLong").addClass("text-success");
+                $("#passLong").html("Good!");
+                return true
+            }
+        }
+
+        $(document).ready(function () {
+            $("#password2").keyup(checkPasswordMatch);
+            $("#password1").keyup(checkPassLong);
+
+            if (checkPassLong() == true || checkPasswordMatch() == true) {
+                btnRegister.prop('disabled', false);
+            } else {
+                btnRegister.prop('disabled', true);
+            }
+        });
+
+
+
+    </script>
+
+    {% endblock %}

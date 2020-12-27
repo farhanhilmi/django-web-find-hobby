@@ -1,0 +1,74 @@
+{% extends './base.html' %}
+{% load socialaccount %}
+{% providers_media_js %}
+{% block content %}
+
+<div class="container h-100">
+    <div class="d-flex justify-content-center h-100">
+        {% for msg in messages %}
+        <small>{{msg}}</small>
+        {% endfor %}
+        <div class="user_card">
+            <div class="d-flex justify-content-center ">
+                <h4 id="form-title" class="font-weight-bold">Scheduler</h4>
+            </div>
+            <div class="login_title d-flex justify-content-left">
+                <h6>Log In</h6>
+            </div>
+            <!-- {% for message in messages %}
+                <p id="messages">{{message}}</p>
+                {% endfor %} -->
+            <div class="d-flex justify-content-center form_container">
+                <form method="POST" action="" id="formLogin" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input type="text" name="username" placeholder="Username" class="form-control" required>
+                    </div>
+
+                    <div class="input-group mb-0">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input type="password" name="password" placeholder="Password" class="form-control" required>
+                    </div>
+                    <small id="forgot" class="form-text text-muted mb-4 mt-0">
+                        Forgot your password? <a class="font-weight-bold" href="#">Here</a>
+                    </small>
+
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <input class="btn login_btn" type="submit" value="Login">
+                    </div>
+                    <small class="create_account form-text text-muted mb-0 mt-3 ">
+                        Don't have account? <a href="{% url 'register_page' %}" id="createAccount">Create Account</a>
+                    </small>
+                </form>
+
+
+
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-center mt-3 login_container">
+                <a href="{% provider_login_url 'facebook' method='oauth2' %}"
+                    class="btn social_login fb_login font-weight-bold ">
+                    <i class="fab fa-facebook-square"></i>Log In with Facebook
+                </a>
+            </div>
+            <div class="d-flex justify-content-center mt-2 login_container">
+                <a href="{% provider_login_url 'google' %}" class="btn social_login google_login font-weight-bold ">
+                    <i class="fab fa-google"></i>Log In with Google
+                </a>
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    {% endblock %}
