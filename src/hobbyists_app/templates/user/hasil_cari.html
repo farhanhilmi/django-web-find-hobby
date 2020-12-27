@@ -5,24 +5,15 @@
 <!-- <img src="https://wallpapercave.com/wp/wp6312868.jpg" class="img-fluid" alt="Responsive image"> -->
 
 <section class="section-pencarian" style="margin-top: 150px;">
-    <form action="pencarian_url" method="POST"></form>
-    {% csrf_token %}
     <div class="pencarian mx-auto">
         <!-- <div class=" card-body"> -->
 
         <label for="cari" class="fas fa-search mr-2 mt-2 ml-2"></label>
-        <input name="cari" class="cariInput" placeholder="Cari hobby kamu disini" />
+        <input name="cari" placeholder="Cari hobby kamu disini" />
+
         <!-- </div> -->
     </div>
-    </form>
 </section>
-
-<script>
-    btn = document.getElementsByClassName('cariInput');
-    btn.addEventListener("keyup", function (event) {
-
-    });
-</script>
 
 <div class="discuss-forum mt-5">
     <h3 class="mb-0">Latest Forum Discuss</h3>

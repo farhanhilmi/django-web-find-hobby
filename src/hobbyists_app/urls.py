@@ -16,6 +16,9 @@ urlpatterns = [
     path('list-forum/detail/like/<str:id>',
          views.likePost, name='like_forum_url'),
 
+    path('list-forum/pencarian/<str:name>',
+         views.cari_page, name='pencarian_url'),
+
     # url(r'^list-forum/add/$', views.forum_add, name='forum_add_url'),
     # url(r'^list-forum/(?P<pk>\d+)/update/$',
     #     views.forum_update, name='forum_update_url'),

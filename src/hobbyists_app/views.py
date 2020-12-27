@@ -61,11 +61,23 @@ def logout_page(request):
 @login_required(login_url='login_page')
 def home_page(request):
     page_title = "Home"
-    events = ListEvent.objects.all().order_by('-date_created')
+    events = ListEvent.objects.filter().order_by('-date_created')
     forum = ListForum.objects.all().order_by('-date_created')
 
     context = {'page_title': page_title, 'events': events, 'forum': forum}
     return render(request, 'user/home.html', context)
+
+
+@login_required(login_url='login_page')
+def cari_page(request, name):
+    page_title = "Pencarian"
+    events = ListEvent.objects.filter(
+        name__contains=name).order_by('-date_created')
+    forum = ListForum.objects.filter(
+        topic__contains=name).order_by('-date_created')
+
+    context = {'page_title': page_title, 'events': events, 'forum': forum}
+    return render(request, 'user/hasil_cari.html', context)
 
 
 @login_required(login_url='login_page')
