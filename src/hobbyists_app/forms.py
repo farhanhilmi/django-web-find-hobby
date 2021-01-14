@@ -17,24 +17,10 @@ class FormForum(forms.ModelForm):
         exclude = ['date_created', 'num_like', 'num_comment']
         widgets = {
             # 'user_id': forms.TextInput(attrs={'class': 'form-control', 'value': get_user_id()}),
-            'topic': forms.TextInput(attrs={'class': 'form-control'}),
+            'topic': forms.TextInput(attrs={'class': 'form-control', 'id': 'topicVal'}),
             'user_id': forms.TextInput(attrs={'type': 'hidden'}),
-            # 'category': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
-        }
-
-
-class FormForum(forms.ModelForm):
-    class Meta:
-        model = ListForum
-        fields = '__all__'
-        exclude = ['date_created', 'num_like', 'num_comment']
-        widgets = {
-            # 'user_id': forms.TextInput(attrs={'class': 'form-control', 'value': get_user_id()}),
-            'topic': forms.TextInput(attrs={'class': 'form-control'}),
-            'user_id': forms.TextInput(attrs={'type': 'hidden'}),
-            # 'category': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '3'}),
+            # 'category': forms.ChoiceField(queryset=ListCategory.objects.all().order_by('name')),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'id': 'descVal'}),
         }
 
 

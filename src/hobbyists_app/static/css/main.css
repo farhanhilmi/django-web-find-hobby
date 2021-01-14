@@ -3,6 +3,14 @@
   background-color: white;
 }
 
+.text-primary-red {
+  color: #fe5f55;
+}
+
+.bg-primary-red {
+  background-color: #fe5f55;
+}
+
 .navbar .navbar-brand {
   color: #fe5f55;
   font-weight: bold;
@@ -235,6 +243,13 @@
 }
 
 .list-forum .tambah-komentar .input-komentar {
+  width: 100%;
+  border: 0;
+  outline: none;
+  color: #d77a61;
+}
+
+.input-komentar {
   width: 100%;
   border: 0;
   outline: none;

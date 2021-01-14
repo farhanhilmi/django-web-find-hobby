@@ -4,12 +4,16 @@
         <!-- 4 of these -->
         <div class="card">
             <div class="card-body">
+
+                <!-- {% if frm.user_id.id == user.id %}
+                <a class="btnForumEdit" href="#" data-url="{% url 'update_forum_url' frm.id %}"><small><i
+                            class="fas text-warning fa-edit"></i></small></a>
+                <a class="btnForumDelete" href="#" data-id="{{frm.id}}" data-one="{{frm.topic}}" data-toggle="modal"
+                    data-target="#deleteforum"><small><i class="fas text-danger fa-trash"></i></small></a>
+                {% endif %} -->
                 <a href="{% url 'detail_forum_url' frm.id %}">
-                    <h5 class="card-title mb-0">{{frm.topic}}
-                        {% if frm.user_id.id == user.id %}
-                        <a href=""><span class="badge badge-warning badge-pill"><small>edit</small></span></a>
-                        <a href=""><span class="badge badge-danger badge-pill"><small>hapus</small></span></a>
-                        {% endif %}
+                    <h5 class="card-title mb-0">
+                        {{frm.topic}}
                     </h5>
                 </a>
                 <small>by: {{frm.user_id.first_name}} {{frm.user_id.last_name}}</small> |

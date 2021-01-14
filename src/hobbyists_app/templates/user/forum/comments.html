@@ -1,0 +1,56 @@
+{% for cmt in comment %}
+<div class="card-deck mb-3">
+    <!-- 4 of these -->
+    <div class="card">
+        <div class="card-body">
+            <div class="mb-0">
+                <a href="#" class="badge tag-forum">@{{cmt.user_id.username}}</a> |
+                <small>{{cmt.date_created}}</small>
+
+                {% if user.id == cmt.user_id.id %}
+                <a class="btnCommentDel float-right" href="#" data-id="{{cmt.id}}" data-one="{{cmt.topic}}"
+                    data-toggle="modal" data-target="#modal-hps-komentar"><small><i
+                            class="fas text-danger fa-trash"></i></small></a>
+
+                <a class="btnCommentEdit float-right mr-2" href="#"
+                    data-url="{% url 'update_comment_url' cmt.id %}"><small><i
+                            class="fas text-warning fa-edit"></i></small></a>
+                {% endif %}
+
+                <div class="ml-1 mr-1 mt-0 row">
+                    <p class="">{{cmt.discuss}}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+<!-- <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+    Launch demo modal
+</a> -->
+
+<!-- Modal Delete-->
+<div class="modal fade" id="modal-hps-komentar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Komentar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'delete_komentar' %}" method="post">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="text" value="" name="comment_id" id="delCommentId" />
+                    <small>Hapus komentar ini?</small>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-sm text-white btn-tambah" value="Delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

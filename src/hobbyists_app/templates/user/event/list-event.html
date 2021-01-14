@@ -35,7 +35,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title mt-4">{{event.name}}</h5>
-                        <p>{{event.description |truncatechars:120}}</p>
+                        <p>{{event.description |truncatechars:100}}</p>
                         <i class="fas fa-map-marker-alt" style="color:#fe5f55;"></i>
 
                         <small class="card-text ml-2">{{event.alamat}}</small>
@@ -50,8 +50,44 @@
             </div>
         </div>
         {% endfor %}
-
     </div>
+
+    {% if events.has_other_pages %}
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            {% if events.has_previous %}
+            <li class="page-item">
+                <a class="page-link" tabindex="-1" aria-disabled="true"
+                    href="?page={{ events.previous_page_number }}">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {% endif %}
+            {% for i in events.paginator.page_range %}
+            {% if events.number == i %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link">{{ i }} <span class="sr-only">(current)</span></a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{i}}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if events.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ events.next_page_number }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
 </div>
 <!-- <div class="form-group">
     <label for="cari" class="fas fa-search"></label>

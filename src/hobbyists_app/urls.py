@@ -11,10 +11,23 @@ urlpatterns = [
     path('logout', views.logout_page, name='logout_page'),
 
     url(r'^list-forum$', views.list_forum, name='list_forum'),
+    #     path('list-forum/update/<str:id>',
+    #          views.update_forum, name='update_forum_url'),
+    url(r'^list-forum/(?P<pk>\d+)/update/$',
+        views.update_forum, name='update_forum_url'),
+
     path('list-forum/detail/<str:id>',
          views.detail_forum, name='detail_forum_url'),
     path('list-forum/detail/like/<str:id>',
          views.likePost, name='like_forum_url'),
+
+    url(r'^list-forum/detail/(?P<pk>\d+)/update-comment/$',
+        views.update_comment, name='update_comment_url'),
+    path('list-forum/delete-comment',
+         views.delete_comment, name='delete_komentar'),
+
+    path('list-forum/delete',
+         views.deleteForum, name='delete_forum'),
 
     path('list-forum/pencarian',
          views.cari_page, name='pencarian_url'),

@@ -1,7 +1,6 @@
 $(function () {
     var loadForm = function () {
         var btn = $(this);
-        console.log("LOAD FORM")
         $.ajax({
             url: btn.attr("data-url"),
             type: 'get',
@@ -9,8 +8,6 @@ $(function () {
             beforeSend: function () {
                 $("#modal-forum .modal-content").html("");
                 $("#modal-forum").modal("show");
-                console.log("BEFORESEND");
-
             },
             success: function (data) {
                 $("#modal-forum .modal-content").html(data.html_form);
@@ -29,7 +26,7 @@ $(function () {
             success: function (data) {
                 if (data.form_is_valid) {
                     location.reload();
-                    $(".list-forum-data .card-deck").html(data.html_list_forum);
+                    $(".list-comment-data .card-deck").html(data.html_list_comment);
                     $("#modal-forum").modal("hide");
                     console.log("REFRESH");
                     // window.location.href = "http://www.w3schools.com";
@@ -38,7 +35,7 @@ $(function () {
                     // });
                 }
                 else {
-                    $("#modal-forum .modal-content").html(data.html_form);
+                    $("#modal-forum .card-body").html(data.html_form);
                     console.log("REFRESH RIDAK");
                 }
             }
@@ -47,7 +44,7 @@ $(function () {
     };
 
     // Update task
-    $(".btnForumEdit").on("click", loadForm);
-    $("#modal-forum").on("submit", ".upadeteforumForm", saveForm);
+    $(".btnCommentEdit").on("click", loadForm);
+    $("#modal-forum").on("submit", ".upadeteCommentForm", saveForm);
 });
 

@@ -1,0 +1,27 @@
+{% load widget_tweaks %}
+<form action="{% url 'update_forum_url' form.instance.pk %}" method="POST" class="upadeteforumForm">
+    {% csrf_token %}
+
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Forum</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <input type="hidden" value="{{user.id}}" name="user_id">
+        <label for="topicVal">Topic:</label>
+        <!-- <input type="text" class="form-control" name="topic" id="topicVal"> -->
+        {{form.topic}}
+        <!-- <label for="catVal">Category:</label>
+        <input type="text" class="form-control" name="category" id="catVal"> -->
+        <label for="category">Category:</label>
+        {{form.category|add_class:"form-control"}}
+
+        <label for="description">Description:</label>
+        {{form.description}}
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-sm text-white btn-tambah">Update</button>
+    </div>
+</form>

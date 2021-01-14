@@ -1,12 +1,12 @@
 {% extends 'user\layout\main.html' %}
 {% load static %}
-
+{% load widget_tweaks %}
 {% block content %}
-
+<!-- 
 
 {% block javascript %}
 <script src="{% static 'js/forum.js' %}"></script>
-{% endblock %}
+{% endblock %} -->
 <!-- <img src="https://wallpapercave.com/wp/wp6312868.jpg" class="img-fluid" alt="Responsive image"> -->
 
 <section class="section-pencarian" style="margin-top: 150px;">
@@ -21,65 +21,125 @@
             <!-- </div> -->
         </div>
     </form>
-    <button type="button" class="btn btn-info btn-tambah" data-toggle="modal" data-target="#tambahforum">
-        Buat Forum
-    </button>
 </section>
 
 
-
-<div class="list-forum mt-1">
+<div class="list-forum mt-5">
     <h3 class="mb-0">Forum Diskusi Terbaru</h3>
     <small>Diskusikan hobbi anda</small>
-    <div class="row mt-4" id="data-forum">
-
-
-        {% include 'user/forum/list_data_forum.html' %}
-
+    <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-info btn-tambah" data-toggle="modal" data-target="#tambahforum">
+            Buat Forum
+        </button>
     </div>
+    <div class="row mt-4 list-forum-data" id="data-forum">
+        {% include 'user/forum/list_data_forum.html' %}
+    </div>
+
+    {% if forum.has_other_pages %}
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            {% if forum.has_previous %}
+            <li class="page-item">
+                <a class="page-link" tabindex="-1" aria-disabled="true"
+                    href="?page={{ forum.previous_page_number }}">Previous</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            {% endif %}
+            {% for i in forum.paginator.page_range %}
+            {% if forum.number == i %}
+            <li class="page-item active" aria-current="page">
+                <a class="page-link">{{ i }} <span class="sr-only">(current)</span></a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{i}}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% if forum.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ forum.next_page_number }}">Next</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endif %}
 </div>
 
-<!-- <div class="form-group">
-    <label for="cari" class="fas fa-search"></label>
-    <input name="cari" id="cari" />
-</div> -->
 
-<!-- Modal -->
+
+
+<!-- Modal Tambah-->
 <div class="modal fade" id="tambahforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Buat Forum</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <form action="{% url 'list_forum' %}" method="post">
                 <div class="modal-body">
-
                     {% csrf_token %}
                     <label for="topic">Topic:</label>
                     {{form.topic}}
+                    <label for="desc">Category:</label>
+                    {{form.category|add_class:"form-control"}}
                     <label for="desc">Description:</label>
                     {{form.description}}
-
-                    <label for="cat">Category:</label>
-                    <select name="name" class="form-control" id="cat">
-                        {% for ct in category %}
-                        <option value='{{ct.name}}'>{{ ct.name }}</option>
-                        {% endfor %}
-                    </select>
-
-
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                    <input type="submit" class="btn btn-sm btn-info" value="Submit">
+                    <input type="submit" class="btn btn-sm text-white btn-tambah" value="Submit">
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+
+<!-- Modal Delete-->
+<div class="modal fade" id="deleteforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Forum</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'delete_forum' %}" method="post">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" value="" name="id_forum" id="delForumId" />
+                    <small>Apakah anda yakin akan menghapus forum "<b id="delForumVal"></b>" ?</small>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-sm text-white btn-tambah" value="Delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Update-->
+<div class="modal fade" id="modal-forum">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

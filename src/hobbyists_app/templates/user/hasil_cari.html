@@ -18,73 +18,98 @@
     </form>
 </section>
 
-<div class="discuss-forum mt-5">
-    <h3 class="mb-0">Pencarian Forum Discuss</h3>
-    <small>Diskusikan hobbi anda</small>
-    <div class="row mt-4">
-        {% for frm in forum|slice:":6" %}
-        <div class="col-4 mb-3">
-            <div class="card-deck">
-                <!-- 4 of these -->
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title mb-0">{{frm.topic}}</h5>
-                        <small>by: {{frm.user_id.first_name}} {{frm.user_id.last_name}}</small> <br>
+<div class="text-center mt-2">
+    <small>Hasil pencarian untuk {{result_cari}}</small>
+</div>
 
-                        <div class="mt-3 row" style="margin-left: 5rem;">
-                            <div class="comment-forum mr-3">
-                                <i class="fas fa-comment-dots mt-1 ml-3"><small
-                                        class="ml-1">{{frm.num_comment}}</small></i>
-                            </div>
-                            <div class="comment-forum">
-                                </i><i class="fas fa-heart mt-1 ml-3"></i><small
-                                    class="ml-1">{{frm.num_like}}</small></i>
-                            </div>
-                        </div>
-                        <a href="{% url 'detail_forum_url' frm.id %}" class="stretched-link"></a>
-                    </div>
+<div class="discuss-forum mt-3">
+    <h4 class="mb-0">Pencarian Forum Discuss</h4>
+    <small>Diskusikan hobbi anda</small>
+    {% if count_forum < 1 %} <div class="mt-3 card-deck mb-3">
+        <!-- 4 of these -->
+        <div class="card bg-white">
+            <div class="card-body">
+                <div class="mb-0">
+                    <small>Tidak ada forum yang berkaitan dengan <b>{{result_cari}}</b>!</small>
                 </div>
             </div>
         </div>
-        {% endfor %}
+</div>
+{% endif %}
 
+<div class="row mt-3">
+    {% for frm in forum|slice:":6" %}
+    <div class="col-4 mb-3">
+        <div class="card-deck">
+            <!-- 4 of these -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-0">{{frm.topic}}</h5>
+                    <small>by: {{frm.user_id.first_name}} {{frm.user_id.last_name}}</small> <br>
+
+                    <div class="mt-3 row" style="margin-left: 5rem;">
+                        <div class="comment-forum mr-3">
+                            <i class="fas fa-comment-dots mt-1 ml-3"><small class="ml-1">{{frm.num_comment}}</small></i>
+                        </div>
+                        <div class="comment-forum">
+                            </i><i class="fas fa-heart mt-1 ml-3"></i><small class="ml-1">{{frm.num_like}}</small></i>
+                        </div>
+                    </div>
+                    <a href="{% url 'detail_forum_url' frm.id %}" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+
+</div>
 </div>
 
 <div class="list-event mt-5">
-    <h3 class="mb-0">Pencarian Event</h3>
+    <h4 class="mb-0">Pencarian Event</h4>
     <small>Hadiri event untuk salurkan minat anda</small>
-    <div class="row mt-4">
-        {% for event in events|slice:":6" %}
-        <div class="col-4 mb-5">
-            <div class="card-deck">
-                <!-- 4 of these -->
-                <div class="card">
-                    <span class="notify-badge">{{event.category}}</span>
-                    <img class="card-img-top" src="../../{{event.image}}" alt="Card image cap">
-                    <div class="tgl-info">
-                        <!-- <p class="tgl">13</p> -->
-                        <p class="bulan">{{event.start_time.date}}</p>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title mt-4">{{event.name}}</h5>
-                        <p>{{event.description | truncatechars:120}}</p>
-                        <i class="fas fa-map-marker-alt" style="color:#fe5f55;"></i>
+    {% if count_event < 1 %} <div class="mt-3 card-deck mb-3">
+        <!-- 4 of these -->
+        <div class="card bg-white">
+            <div class="card-body">
+                <div class="mb-0">
+                    <small>Tidak ada event yang berkaitan dengan <b>{{result_cari}}</b>!</small>
+                </div>
+            </div>
+        </div>
+</div>
+{% endif %}
+<div class="row mt-3">
+    {% for event in events|slice:":6" %}
+    <div class="col-4 mb-5">
+        <div class="card-deck">
+            <!-- 4 of these -->
+            <div class="card">
+                <span class="notify-badge">{{event.category}}</span>
+                <img class="card-img-top" src="../../{{event.image}}" alt="Card image cap">
+                <div class="tgl-info">
+                    <!-- <p class="tgl">13</p> -->
+                    <p class="bulan">{{event.start_time.date}}</p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mt-4">{{event.name}}</h5>
+                    <p>{{event.description | truncatechars:120}}</p>
+                    <i class="fas fa-map-marker-alt" style="color:#fe5f55;"></i>
 
-                        <small class="card-text ml-2">{{event.alamat}}</small>
-                        <div class="row">
-                            <div class="col text-center mt-3">
-                                <a href="{% url 'detail_event_url' event.id%}" class="btn btn-info btn-detail">Detail
-                                    Event</a>
-                            </div>
+                    <small class="card-text ml-2">{{event.alamat}}</small>
+                    <div class="row">
+                        <div class="col text-center mt-3">
+                            <a href="{% url 'detail_event_url' event.id%}" class="btn btn-info btn-detail">Detail
+                                Event</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {% endfor %}
-
     </div>
+    {% endfor %}
+
+</div>
 </div>
 <!-- <div class="form-group">
     <label for="cari" class="fas fa-search"></label>

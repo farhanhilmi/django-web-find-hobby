@@ -9,3 +9,4 @@ admin.site.register(ListCategory)
 admin.site.register(ListForum)
 admin.site.register(ForumDiscussion)
 admin.site.register(HadirEvent)
+ 

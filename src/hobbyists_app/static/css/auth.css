@@ -3,14 +3,14 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #7abecc !important;
+  background: #f4927e !important;
 }
 
 .user_card {
   width: 350px;
   margin-top: auto;
   margin-bottom: auto;
-  background: #74cfbf;
+  background: white;
   position: relative;
   display: flex;
   justify-content: center;
@@ -39,7 +39,7 @@ hr {
 }
 
 #form-title {
-  color: #fff;
+  color: #fe5f55;
 }
 
 .login_title {

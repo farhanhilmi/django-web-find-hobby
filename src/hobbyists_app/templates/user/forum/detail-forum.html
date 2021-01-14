@@ -2,22 +2,23 @@
 
 {% block content %}
 
-
 <div class="list-forum" style="margin-top: 100px;">
     <h3 class="mb-0">Forum</h3>
-    <div class="row mt-4">
+    <div class="row list-forum-data mt-4">
         {% for frm in forum %}
         <div class="col-12 mb-3">
             <div class="card-deck">
                 <!-- 4 of these -->
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title mb-0">{{frm.topic}}
-                            {% if frm.user_id.id == user.id %}
-                            <a href=""><span class="badge badge-warning badge-pill"><small>edit</small></span></a>
-                            <a href=""><span class="badge badge-danger badge-pill"><small>hapus</small></span></a>
-                            {% endif %}
-                        </h5>
+                        {% if frm.user_id.id == user.id %}
+                        <a class="btnForumEdit" href="#" data-url="{% url 'update_forum_url' frm.id %}"><small><i
+                                    class="fas text-warning fa-edit"></i></small></a>
+                        <a class="btnForumDelete" href="#" data-id="{{frm.id}}" data-one="{{frm.topic}}"
+                            data-toggle="modal" data-target="#deleteforum"><small><i
+                                    class="fas text-danger fa-trash"></i></small></a>
+                        {% endif %}
+                        <h5 class="card-title mb-0">{{frm.topic}}</h5>
 
                         <small>by: {{frm.user_id.first_name}} {{frm.user_id.last_name}}</small> | <small>On 23 Feb
                             2020</small> <br>
@@ -68,7 +69,7 @@
                                 <!-- <textarea class="input-komentar" placeholder="Tuangkan opini anda disini"
                                     cols="5"></textarea> -->
                                 <br>
-                                <input type="submit" value="Kirim" class="btn btn-sm btn-info float-right">
+                                <input type="submit" value="Kirim" class="btn btn-sm btn-info btn-tambah float-right">
                             </form>
                         </div>
 
@@ -81,38 +82,34 @@
 
         <div class="col-12 mb-3">
             <h5>Diskusi</h5>
-            {% for cmt in comment %}
-            <div class="card-deck mb-3">
+            {% if comment_count < 1 %} <div class="card-deck mb-3">
                 <!-- 4 of these -->
                 <div class="card">
                     <div class="card-body">
-
-
                         <div class="mb-0">
-                            <a href="#" class="badge tag-forum">@{{cmt.user_id.username}}</a> |
-                            <small>{{cmt.date_created}}</small>
-                            <div class="ml-1 mr-1 mt-0 row">
-                                <p class="">{{cmt.discuss}}</p>
-                            </div>
+                            <small>Tidak ada komentar!</small>
                         </div>
-
                     </div>
                 </div>
-            </div>
-            {% endfor %}
-
         </div>
 
+        {% endif %}
+        <div class="list-comment-data">
+            {% include 'user/forum/comments.html' %}
+        </div>
 
     </div>
+
+    <!-- Modal Update-->
+    <div class="modal fade" id="modal-forum">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
 </div>
-
-<!-- <div class="form-group">
-    <label for="cari" class="fas fa-search"></label>
-    <input name="cari" id="cari" />
-</div> -->
-
-
+</div>
 
 
 
