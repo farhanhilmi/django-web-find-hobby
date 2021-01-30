@@ -13,6 +13,8 @@ from django.forms.models import model_to_dict
 from .forms import *
 from .models import *
 
+from django.contrib.auth.hashers import make_password
+
 from django.urls import resolve
 from django.http import HttpResponse, HttpResponseForbidden
 
@@ -76,6 +78,37 @@ def home_page(request):
 
     context = {'page_title': page_title, 'events': events, 'forum': forum}
     return render(request, 'user/home.html', context)
+
+
+@login_required(login_url='login_page')
+def data_profile(request, username):
+    account = Profile.objects.get(user_id=request.user.id)
+    page_title = f"{account.name} ~ @{account.user_id.username} - Find Hobbies"
+
+    password = make_password('Madrid007')
+    if account.user_id.password == password:
+        print("SAMA")
+    else:
+        print("BEDA")
+
+    if request.method == 'POST':
+        if request.POST['chPwd'] == 'pwdChange':
+            user = User.objects.get(id=request.user.id)
+            user.set_password(request.POST['pwdChange'])
+            user.save()
+
+    pwd = account.user_id.has_usable_password()
+    context = {'account': account, 'pwd': pwd, 'page_title': page_title}
+    return render(request, 'user/profile/setting_profile.html', context)
+
+
+def update_profile(request, pk):
+    profile = get_object_or_404(ListForum, pk=pk)
+    if request.method == 'POST':
+        form = FormProfile(request.POST, instance=profile)
+    else:
+        form = FormProfile(instance=profile)
+    return save_forum_form(request, form, 'user/forum/update_forum_form.html', pk)
 
 
 @login_required(login_url='login_page')

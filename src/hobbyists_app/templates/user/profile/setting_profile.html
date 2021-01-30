@@ -1,0 +1,214 @@
+{% extends 'user\layout\main.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="profile-detail" style="margin-top: 100px;">
+    <!-- <div class="d-flex justify-content-center"> -->
+
+    <div class="row mt-3 mb-1 d-flex justify-content-center">
+        <img src="../../{{account.profile_pic}}" class="float-left">
+    </div>
+    <!-- </div> -->
+    <h6 class="d-flex justify-content-center text-primary-red mb-0 mt-3"><strong>@{{account.user_id.username}}</strong>
+    </h6>
+    <h4 class="d-flex justify-content-center text-primary-red mt-0"><strong>{{account.name}}</strong></h4>
+
+    <div class="vl"></div>
+    <div class="row mt-4">
+        <div class="col-10 mb-3 mx-auto">
+            <div class="card-deck">
+                <!-- 4 of these -->
+                <div class="card">
+
+                    <div class="card-body">
+                        <!-- <img src="#" class="float-left mr-4"> -->
+                        <!-- <a href="#" class="badge tag-forum mt-0">Football</a> -->
+                        <a href="#" data-toggle="modal" data-target="#modal-profile"
+                            class="d-flex justify-content-center btn btn-tambah text-white mb-3"
+                            style="margin-left: 40%;">
+                            Edit Profile
+                        </a>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">PHONE NUMBER</p>
+                                    <p class="mt-0">{{account.phone}}</p>
+                                </div>
+                                <hr style="margin-left: -20px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">EMAIL</p>
+                                    {% if account.user_id.email == "" %}
+                                    <p class="text-secondary mt-0">Not set yet</p>
+                                    {% else %}
+                                    <p class="mt-0">{{account.user_id.email}}</p>
+                                    {% endif %}
+                                </div>
+                                <hr style="margin-left: -20px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">PASSWORD
+                                        <span class="badge badge-warning">
+                                            <a href="#" data-toggle="modal" data-target="#exampleModal">Change</a>
+                                        </span>
+                                    </p>
+
+                                    {% if pwd %}
+                                    <p class="mt-0" style="-webkit-text-security: disc;">1120102-10-</p>
+                                    {% else %}
+                                    <p class="text-secondary mt-0">Not set yet</p>
+                                    <!-- {{account.user_id.password}} -->
+                                    {% endif %}
+                                </div>
+                                <hr style="margin-left: -20px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">LAST LOGIN</p>
+                                    <p class="mt-0">{{account.user_id.last_login}}</p>
+                                </div>
+                                <hr style="margin-left: -20px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">DATE JOINED</p>
+                                    <p class="mt-0">{{account.user_id.date_joined}}</p>
+                                </div>
+                                <hr style="margin-left: -20px; margin-right: -5%;">
+                            </div>
+
+                            <div class="col-6">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">HOBBY</p>
+                                    <p class="mt-0">{{account.hobby}}</p>
+                                </div>
+                                <hr style="margin-left: -10px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">COMMENTS</p>
+                                    <p class="mt-0">982 comments</p>
+                                </div>
+                                <hr style="margin-left: -10px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">FORUMS</p>
+                                    <p class="mt-0">14 forums</p>
+                                </div>
+                                <hr style="margin-left: -10px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">EVENTS</p>
+                                    <p class="mt-0">12 events</p>
+                                </div>
+                                <hr style="margin-left: -10px; margin-right: -5%;">
+                                <div class="phone-number">
+                                    <p class="text-secondary mb-0">EVENT ATTENDANCE</p>
+                                    <p class="mt-0">99 times</p>
+                                </div>
+                                <hr style="margin-left: -10px; margin-right: -5%;">
+                            </div>
+                        </div>
+
+
+                        <div>
+                            <div class="float-left">
+                                <h5>Contact</h5>
+                                <span class="badge badge-secondary mt-2"><i class="fas fa-laptop-code"></i>
+                                    farhan.com
+                                </span>
+                                <span class="badge badge-danger"><i class="fas fa-envelope-square"></i>
+                                    gmail.com
+                                </span>
+                                <span class="badge badge-info"><i class="fas fa-phone-square-alt"></i>
+                                    090994
+                                </span>
+                            </div>
+                            <div class="">
+                                <!-- <div class="col-12 text-center mt-3 mr-0 mb-0"> -->
+                                <!-- </div> -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark">
+            <div class="">
+                <button type="button" class="close mr-2" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-white">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <input type="hidden" value="pwdChange" name="chPwd">
+                    <input type="password" name="pwdChange" class="form-control ch-pwd"
+                        placeholder="Masukan Password Baru">
+                </div>
+                <div class="">
+                    <input type="submit" class="btn btn-warning btn-sm float-right mr-3 mb-2" value="Save changes">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="">
+                <button type="button" class="close mr-2" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="text-whit">&times;</span>
+                </button>
+            </div>
+            <form action="" method="post" autocomplete="nope">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <!-- <input type="hidden" value="pwdChange" name="chPwd"> -->
+                    <label for="username">Username</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                        </div>
+                        <input type="text" class="form-control" id="username" name="username" placeholder="Username"
+                            aria-label="Username" aria-describedby="basic-addon1">
+                    </div>
+
+                    <label for="name">Nama Lengkap</label>
+                    <div class="input-group mb-3">
+                        <input type="text" name="name" id="name" class="form-control">
+                    </div>
+
+                    <label for="phone">No. HP</label>
+                    <div class="input-group mb-3">
+                        <input type="text" name="phone" id="phone" class="form-control">
+                    </div>
+
+                    <label for="email">Email</label>
+                    <div class="input-group mb-3">
+                        <input type="text" name="email" id="email" class="form-control">
+                    </div>
+
+                </div>
+                <div class="">
+                    <input type="submit" class="btn btn-warning btn-sm float-right mr-3 mb-2" value="Save changes">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="form-group">
+    <label for="cari" class="fas fa-search"></label>
+    <input name="cari" id="cari" />
+</div> -->
+
+
+{% endblock %}

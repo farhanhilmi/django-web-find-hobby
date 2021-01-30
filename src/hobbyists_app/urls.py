@@ -44,4 +44,7 @@ urlpatterns = [
     path('list-event/hadir/<str:id>',
          views.hadirEvent, name='hadirEvent'),
 
+
+    path('profile/<str:username>',
+         views.data_profile, name='profile_url'),
 ]

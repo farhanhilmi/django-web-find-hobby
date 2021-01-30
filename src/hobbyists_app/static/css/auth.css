@@ -6,6 +6,9 @@ html {
   background: #f4927e !important;
 }
 
+.btn-login {
+}
+
 .user_card {
   width: 350px;
   margin-top: auto;
@@ -38,7 +41,7 @@ hr {
   border-top: 2px solid red;
 }
 
-#form-title {
+.text-red-color {
   color: #fe5f55;
 }
 
@@ -53,9 +56,22 @@ hr {
 }
 
 .login_btn {
-  width: 100%;
-  background: #33ccff !important;
-  color: white !important;
+  border-radius: 15px;
+  width: 80%;
+  border: none;
+  font-weight: bold;
+  /* box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.1); */
+  background: #ff7e5f; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to left,
+    #feb47b,
+    #ff7e5f
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to left,
+    #feb47b,
+    #ff7e5f
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .login_btn:focus {
@@ -68,7 +84,7 @@ hr {
 }
 
 .input-group-text {
-  background: #f7ba5b !important;
+  background: #f4927e !important;
   color: white !important;
   border: 0 !important;
   border-radius: 0.25rem 0 0 0.25rem !important;

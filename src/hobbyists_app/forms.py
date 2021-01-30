@@ -24,6 +24,20 @@ class FormForum(forms.ModelForm):
         }
 
 
+class FormProfile(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = '__all__'
+        exclude = ['profile_pic']
+        # widgets = {
+        #     # 'user_id': forms.TextInput(attrs={'class': 'form-control', 'value': get_user_id()}),
+        #     'topic': forms.TextInput(attrs={'class': 'form-control', 'id': 'topicVal'}),
+        #     'user_id': forms.TextInput(attrs={'type': 'hidden'}),
+        #     # 'category': forms.ChoiceField(queryset=ListCategory.objects.all().order_by('name')),
+        #     'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '3', 'id': 'descVal'}),
+        # }
+
+
 class updateLikeForm(forms.ModelForm):
     class Meta:
         model = ListForum

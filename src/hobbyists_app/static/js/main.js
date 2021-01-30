@@ -10,6 +10,10 @@ $(document).ready(function () {
         console.log('kaka');
     });
 
+    $('.pwdChange').on('change paste keyup', function () {
+        console.log('lala');
+    });
+
     // $('.btnForumEdit').click(function () {
     //     $('#topicVal').val($(this).data('one'));
     //     $('#editForumId').val($(this).data('id'));
