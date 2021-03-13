@@ -5,6 +5,7 @@ from django.conf.urls import url, include
 
 
 urlpatterns = [
+    path('/', views.login_page, name='login_page'),
     path('home', views.home_page, name='home_page'),
     path('login', views.login_page, name='login_page'),
     path('register', views.register_page, name='register_page'),
@@ -26,8 +27,11 @@ urlpatterns = [
     path('list-forum/delete-comment',
          views.delete_comment, name='delete_komentar'),
 
-    path('list-forum/delete',
-         views.deleteForum, name='delete_forum'),
+#     path('list-forum/delete',
+#          views.deleteForum, name='delete_forum'),
+
+     path('list-forum/hapus', views.deleteForum, name='hapus_forum'),
+
 
     path('list-forum/pencarian',
          views.cari_page, name='pencarian_url'),
@@ -39,12 +43,20 @@ urlpatterns = [
     #     views.forum_delete, name='forum_delete_url'),
 
     path('list-event', views.list_event, name='list_event_url'),
+     path('list-event/add', views.tambah_event, name='add_event_url'),
     path('list-event/detail/<str:id>',
          views.detail_event, name='detail_event_url'),
+     path('list-event/hapus', views.hapus_event, name='hapus_event'),
+
+    url('list-event/detail/update-event',
+        views.update_event, name='update_event_url'),
+        
     path('list-event/hadir/<str:id>',
          views.hadirEvent, name='hadirEvent'),
 
 
     path('profile/<str:username>',
          views.data_profile, name='profile_url'),
+    path('profile/<str:pk>',
+         views.update_profile, name='update_profile_url'),
 ]

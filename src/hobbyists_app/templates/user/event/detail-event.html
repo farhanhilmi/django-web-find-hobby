@@ -1,4 +1,5 @@
 {% extends 'user\layout\main.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
 
@@ -11,9 +12,19 @@
             <div class="card-deck">
                 <!-- 4 of these -->
                 <div class="card">
-
+                    <div class="card-header">
+                        <!-- <div class="float-right"> -->
+                        <a class="btnEventEdit" href="#" data-toggle="modal" data-target="#editEvent"><small><i
+                                    class="fas text-warning fa-edit"></i></small></a>
+                        <a class="btnEventDelete ml-2" href="#" data-id="{{event.id}}" data-toggle="modal"
+                            data-target="#deleteevent"><small><i class="fas text-danger fa-trash"></i></small></a>
+                        <!-- </div> -->
+                    </div>
                     <div class="card-body">
+
+
                         <img src="../../{{event.image}}" class="float-left mr-4">
+
                         <a href="#" class="badge tag-forum mt-0">{{event.category}}</a>
                         <h4 class="card-title mb-0 mt-0">{{event.name}}</h4>
                         <small>by: @{{event.user_id.username}} | {{event.penyelenggara}}</small> <br>
@@ -26,13 +37,43 @@
                         </div>
 
 
-                        <div class="row mt-5">
+                        <div>
+                            {% if event.hadir == None %}
+                            <small>0 orang menghadiri event ini.</small>
+                            {% else %}
+
+                            <small>{{hadir}} orang menghadiri event ini.</small>
+
+                            {% endif %}
+                        </div>
+
+                        <div class="row mt-0">
                             <h6>Kouta Tersedia: </h6>
-                            <span class="badge badge-pill ml-2"
-                                style="background-color: white; padding:6px; box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.1);">{{event.kuota}}</span>
+                            {% if event.kuota < 1 %} <small class="text-danger font-weight-bold">&nbsp;Kouta
+                                Habis</small>
+                                {% else %}
+                                <span class="badge badge-pill ml-2"
+                                    style="background-color: white; padding:6px; box-shadow: 1px 2px 15px rgba(0, 0, 0, 0.1);">{{event.kuota}}</span>
+                                {% endif %}
                         </div>
                         <!-- <div class="col-5 text-center mt-3"> -->
-                        <a href="{% url 'hadirEvent' event.id %}" class="btn btn-info btn-detail mt-2">Hadiri Event</a>
+                        <div class="mt-4">
+
+                            {% if sudahHadir == True %}
+                            <small>Anda sudah terdaftar di event ini.</small><br>
+                            <a href="{% url 'hadirEvent' event.id %}"
+                                class="btn btn-info btn-detail mt-3 disabled">Hadiri
+                                Event</a>
+                            {% else %}
+                            <small>Anda belum terdaftar di event ini.</small><br>
+                            <a href="{% url 'hadirEvent' event.id %}"
+                                class="text-white btn btn-info btn-detail mt-3">Hadiri
+                                Event</a>
+                            {% endif %}
+                            <!--  -->
+
+
+                        </div>
                         <!-- </div> -->
                         <!-- <p class="mt-5">87 Orang akan menghadiri event ini.</p> -->
 
@@ -69,5 +110,100 @@
     <input name="cari" id="cari" />
 </div> -->
 
+<!-- Modal Tambah-->
+<div class="modal fade" id="deleteevent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{% url 'hapus_event' %}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" id="idEvent" value="" name="eventID">
+                    <p>Apakah anda yakin akan menghapus event ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-sm text-white btn-tambah" value="Hapus">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tambah-->
+<div class="modal fade" id="editEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Buat Event</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" name="userID" value="{{user.id}}">
+                    <label for="penyelenggara">Penyelenggara:</label>
+                    {{form_edit.penyelenggara|add_class:"form-control"}}
+                    <label for="name">Name:</label>
+                    {{form_edit.name|add_class:"form-control"}}
+
+                    <label for="category">Category:</label>
+                    {{form_edit.category|add_class:"form-control"}}
+
+                    <label for="tempat">Tempat:</label>
+                    {{form_edit.tempat|add_class:"form-control"}}
+
+                    <label for="alamat">Alamat:</label>
+                    {{form_edit.alamat|add_class:"form-control"|append_attr:"placeholder:asas"|append_attr:"id:id_alamat"}}
+
+                    <label for="image">Picture:</label>
+                    {{form_edit.image|add_class:"form-control"|append_attr:"id:image_event"}}
+
+                    <label for="description">Desctiption:</label>
+                    {{form_edit.description|add_class:"form-control"}}
+
+                    <label for="kouta">Kuota:</label>
+                    {{form_edit.kuota|add_class:"form-control"}}
+
+                    <label for="start_time">Start Time:</label>
+                    {{form_edit.start_time|add_class:"form-control"}}
+
+                    <label for="end_time">End Time:</label>
+                    {{form_edit.end_time|add_class:"form-control"}}
+
+                    <label for="contact_hp">Contact HP:</label>
+                    {{form_edit.contact_hp|add_class:"form-control"}}
+
+                    <label for="contact_email">Contact Email:</label>
+                    {{form_edit.contact_email|add_class:"form-control"}}
+
+                    <label for="contact_website">Website:</label>
+                    {{form_edit.contact_website|add_class:"form-control"}}
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-sm text-white btn-tambah" value="Submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".btnEventDelete").click(function () {
+        $("#idEvent").val($(this).data("id"));
+        console.log("asas");
+    });
+</script>
 
 {% endblock %}

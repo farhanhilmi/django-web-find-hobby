@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -36,29 +37,36 @@ def login_page(request):
         else:
             messages.info(request, 'Username or Password Is Incorrect!')
 
-    page_title = "Login | Schedular"
+    page_title = "Login | Find Hobby"
     context = {'page_title': page_title}
     return render(request, 'user/auth/login.html', context)
 
 
 def register_page(request):
-    form = CreateUser()
+    form = FormUser()
 
     if request.method == 'POST':
-        form = CreateUser(request.POST)
+        form = FormUser(request.POST)
 
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data['username']
-            password = form.cleaned_data['password1']
+            password = form.cleaned_data['password']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
 
+            usr = User.objects.latest('id')
+
+            profile = Profile(user_id=user, name=first_name + " " + last_name)
+            # profile = FormUser(request.POST['name'], instance=usr)
+            profile.save()
+            print('ZZAZ PROFILE: ', profile)
             messages.success(request, 'Account was created for ' + username)
-            user = authenticate(request, username=username, password=password)
 
             login(request, user)
             return redirect('home_page')
 
-    page_title = "Register | Schedular"
+    page_title = "Register | Find Hobby"
     context = {'form': form, 'page_title': page_title}
     # return render(request, 'user/register.html', context)
 
@@ -85,6 +93,13 @@ def data_profile(request, username):
     account = Profile.objects.get(user_id=request.user.id)
     page_title = f"{account.name} ~ @{account.user_id.username} - Find Hobbies"
 
+    instance_profile = Profile.objects.get(id=account.id)
+    form_profile = FormProfileUpdate(request.POST or None, instance=instance_profile)
+
+    instance_user = User.objects.get(id=request.user.id)
+    form_user = FormUserUpdate(request.POST or None, instance=instance_user)
+    # print(instance_user)
+    # print(instance_profile)
     password = make_password('Madrid007')
     if account.user_id.password == password:
         print("SAMA")
@@ -96,19 +111,37 @@ def data_profile(request, username):
             user = User.objects.get(id=request.user.id)
             user.set_password(request.POST['pwdChange'])
             user.save()
+        else:
+            if form_user.is_valid() and form_profile.is_valid():
+                form_user.save()
+                data = form_profile.save()
+                data.name = form_user.cleaned_data['first_name'] + " " + form_user.cleaned_data['last_name']
+                data.save()
+                print('BERHASIL')
+                return redirect('profile_url', username=username)
+            else:
+                print('JAJAJA')
+
 
     pwd = account.user_id.has_usable_password()
-    context = {'account': account, 'pwd': pwd, 'page_title': page_title}
+    context = {'account': account, 'pwd': pwd, 'page_title': page_title, 'form_user':form_user,'form_profile':form_profile}
     return render(request, 'user/profile/setting_profile.html', context)
 
 
 def update_profile(request, pk):
-    profile = get_object_or_404(ListForum, pk=pk)
-    if request.method == 'POST':
-        form = FormProfile(request.POST, instance=profile)
-    else:
-        form = FormProfile(instance=profile)
-    return save_forum_form(request, form, 'user/forum/update_forum_form.html', pk)
+    account = Profile.objects.get(user_id=request.user.id)
+    page_title = f"{account.name} ~ @{account.user_id.username} - Find Hobbies"
+    pwd = account.user_id.has_usable_password()
+
+    profile = Profile.objects.get(user_id=request.user.id)
+    # user = get_object_or_404(User, pk=pk)
+
+    profile.phone = "081"
+    profile.save()
+    print("LALAL: ", profile)
+
+    context = {'account': account, 'pwd': pwd, 'page_title': page_title}
+    return render(request, 'user/profile/setting_profile.html', context)
 
 
 @login_required(login_url='login_page')
@@ -140,6 +173,8 @@ def list_forum(request, forumID=None):
 
     # form = FormForum()
     # category = ListCategory.objects.all()
+    # instanceFORUM = ListForum.objects.get(id=id)
+    
 
     form = FormForum()
 
@@ -211,27 +246,51 @@ def detail_forum(request, id):
         forum_id=id).order_by('-date_created')
     comment_count = comment.count()
 
+    instance = ListForum.objects.get(id=id)
+    form_edit = FormForum(request.POST or None, instance=instance)
+
+    sudahLike = 1
+
+    jsonDec = json.decoder.JSONDecoder()
+    like_user = jsonDec.decode(instance.like_user)
+    print(len(like_user))
+
+    if request.user.id in like_user:
+        sudahLike = 1
+    else:
+        sudahLike = 0
+
     form = CreateInDiscussion()
     if request.method == 'POST':
-        # comment = updateCommentForm(request.POST, instance=forums)
-        form = CreateInDiscussion(request.POST)
-        if form.is_valid():
-            # dataComment = comment.save()
-            comment = ListForum.objects.get(id=id)
-            comment.num_comment = comment.num_comment + 1
-            comment.save()
-            data = form.save()
-            # dataComment.num_comment = forums.num_comment + 1
-            data.forum_id = ListForum.objects.get(id=id)
-            data.user_id = User.objects.get(id=request.user.id)
+        if request.POST['aksiForum'] == 'addKomen':
+            # comment = updateCommentForm(request.POST, instance=forums)
+            form = CreateInDiscussion(request.POST)
+            if form.is_valid():
+                # dataComment = comment.save()
+                comment = ListForum.objects.get(id=id)
+                comment.num_comment = comment.num_comment + 1
+                comment.save()
+                data = form.save()
+                # dataComment.num_comment = forums.num_comment + 1
+                data.forum_id = ListForum.objects.get(id=id)
+                data.user_id = User.objects.get(id=request.user.id)
 
-            # dataComment.save()
-            data.save()
+                # dataComment.save()
+                data.save()
 
-            return redirect('detail_forum_url', id=id)
+                return redirect('detail_forum_url', id=id)
+        
+        elif request.POST['aksiForum'] == 'updateForum':
+            if request.method == 'POST':
+                form_edit = FormForum(request.POST, request.FILES, instance=instance)
+                if form_edit.is_valid():
+                    form_edit.save()
+                    return redirect('detail_forum_url', id=id)
+                else:
+                    print('JAJAJA')
 
-    context = {'page_title': page_title, 'forum': forum,
-               'comment': comment, 'form': form, 'comment_count': comment_count}
+    context = {'page_title': page_title, 'like_user': len(like_user), 'sudahLike':sudahLike ,'forum': forum,
+               'comment': comment, 'form': form, 'comment_count': comment_count, 'form_edit':form_edit}
     return render(request, 'user/forum/detail-forum.html', context)
 
 
@@ -245,7 +304,7 @@ def save_comment_form(request, form, template_name, pk_forum):
             data['form_is_valid'] = True
             data['redirect'] = True
             comment = ForumDiscussion.objects.filter(forum_id=pk_forum)
-            data['html_list_comment'] = render_to_string('user/forum/detail-forum.html', {
+            data['html_list_comment'] = render_to_string('user/forum/comments.html', {
                 'comment': comment
             })
         else:
@@ -281,13 +340,14 @@ def delete_comment(request):
     return HttpResponseForbidden()
 
 
+
 @login_required(login_url='login')
 def deleteForum(request):
-    pk = request.POST['id_forum']
-    forums = ListForum.objects.get(id=pk)
+    pk = request.POST['forumID']
+    forum = ListForum.objects.get(id=pk)
 
-    # if forums.user_id == request.user.id:
-    forums.delete()
+    # if forum.user_id == request.user.id:
+    forum.delete()
 
     return redirect('list_forum')
 
@@ -295,16 +355,51 @@ def deleteForum(request):
 @ login_required(login_url='login')
 def likePost(request, id):
     forum = ListForum.objects.get(id=id)
-    forum.num_like = forum.num_like + 1
-    forum.save()
+    # if forum.hadir == None:
+    jsonDec = json.decoder.JSONDecoder()
+    lds = jsonDec.decode(forum.like_user)
+    # print(baru)
+    if request.user.id in lds:
+        if len(lds) == 1:
+            # baru = lds.remove(request.user.id)
+            forum.like_user = json.dumps([])
+            forum.num_like = 0
+            forum.save()
+            return redirect('detail_forum_url', id=id)
+        else:
+            lds.remove(request.user.id)
+            forum.like_user = json.dumps(lds)
+            forum.num_like = forum.num_like - 1
+            forum.save()
+            return redirect('detail_forum_url', id=id)
+    else:
+        baru = lds + [request.user.id]
+        forum.like_user = json.dumps(baru)
+        forum.num_like = forum.num_like + 1
+        forum.save()
+    # baru = lds.remove(request.user.id)
+    # print([baru])
+
+# # 
+#     forum = ListForum.objects.get(id=id)
+#     if forum.user_like == request.user.id:
+#         forum.num_like = forum.num_like - 1
+#         forum.user_like = 0
+#     else:
+#         forum.num_like = forum.num_like + 1
+#         forum.user_like = request.user.id
+
+#     print(forum.user_like)
+#     forum.save()
 
     return redirect('detail_forum_url', id=id)
 
 
 @ login_required(login_url='login_page')
-def list_event(request):
+def list_event(request, msg='None'):
     page_title = "List Event"
-    events = ListEvent.objects.all()
+    events = ListEvent.objects.filter().order_by('-date_created')
+    form = FormEvent()
 
     page = request.GET.get('page', 1)
     paginator = Paginator(events, 9)
@@ -316,30 +411,93 @@ def list_event(request):
     except EmptyPage:
         events = paginator.page(paginator.num_pages)
 
+    message = msg
+
     context = {'events': events,
-               'page_title': page_title}
+               'page_title': page_title, 'form': form, 'message':message}
+   
     return render(request, 'user/event/list-event.html', context)
 
+
+@ login_required(login_url='login_page')
+def tambah_event(request):
+    form = FormEvent()
+    # comment = updateCommentForm(request.POST, instance=forums)
+    form = FormEvent(request.POST, request.FILES)
+    instance = User.objects.get(id=request.user.id)
+
+    if form.is_valid():
+        data = form.save()
+        # data.user_id = ListEvent(instance=instance)
+        data.save()
+    return redirect('list_event_url')
+
+@login_required(login_url='login_page')
+def hapus_event(request):
+    pk = request.POST['eventID']
+    event = ListEvent.objects.get(id=pk)
+
+    # if event.user_id == request.user.id:
+    event.delete()
+    return redirect('list_event_url')
 
 @login_required(login_url='login_page')
 def detail_event(request, id):
     page_title = "Detail Event"
     events = ListEvent.objects.filter(id=id)
-    context = {'page_title': page_title, 'events': events}
+    # print(events.hadir)
+    # print(ListEvent.get_hadir)
+    event = ListEvent.objects.get(id=id)
+
+    instance = ListEvent.objects.get(id=id)
+    form_edit = FormEvent(request.POST or None, instance=instance)
+    jsonDec = json.decoder.JSONDecoder()
+    hadir = jsonDec.decode(event.hadir)
+    print(len(hadir))
+
+    sudahHadir = False
+
+    if request.user.id in hadir:
+        sudahHadir = True
+    else:
+        sudahHadir = False
+    # request.FILES
+    if request.method == 'POST':
+        form_edit = FormEvent(request.POST, request.FILES, instance=instance)
+        if form_edit.is_valid():
+            form_edit.save()
+            return redirect('detail_event_url', id=id)
+        else:
+            print('JAJAJA')
+
+    context = {'page_title': page_title, 'events': events,
+               'hadir': len(hadir), 'sudahHadir': sudahHadir, 'form_edit':form_edit}
     return render(request, 'user/event/detail-event.html', context)
 
+@login_required(login_url='login')
+def update_event(request):
+    instance = ListEvent.objects.get(id=request.POST['userID'])
+    form = MyForm(request.POST, instance=instance)
+    if form.is_valid():
+        form.save()
+        return redirect('list_event_url')
+        
+    return redirect('home_page')  
 
 @login_required(login_url='login')
 def hadirEvent(request, id):
     event = ListEvent.objects.get(id=id)
-    event.kuota = event.kuota - 1
-    event.save()
+    # if event.hadir == None:
+    jsonDec = json.decoder.JSONDecoder()
+    lds = jsonDec.decode(event.hadir)
+    baru = lds + [request.user.id]
+    # print(baru)
 
-    # hd = HadirEvent
-    # hd.event_id = event.id
-    # hd.user_id = request.user.id
-    # hd.name = event.name
+    if request.user.id in lds:
+        print('SUDAH HADIR')
+    else:
+        event.hadir = json.dumps(baru)
+        event.kuota = event.kuota - 1
+        event.save()
 
-    # hd.save()
-
-    return redirect('user/event/detail-event.html', id=id)
+    return redirect('detail_event_url', id=id)

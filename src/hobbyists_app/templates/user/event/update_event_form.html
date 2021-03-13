@@ -1,0 +1,64 @@
+{% load widget_tweaks %}
+
+<div class="card-deck">
+  <!-- 4 of these -->
+  <div class="card">
+    <div class="card-body">
+      <button type="button" class="close float-right" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h5>Update Event</h5>
+      <hr>
+      <div class="tambah-komentar">
+        <form action="{% url 'update_event_url' form.instance.pk %}" method="POST" class="upadeteEventForm">
+          {% csrf_token %}
+
+          <input type="hidden" value="{{user.id}}">
+          <label for="penyelenggara">Penyelenggara:</label>
+          {{form.penyelenggara|add_class:"form-control"}}
+          <label for="name">Name:</label>
+          {{form.name|add_class:"form-control"}}
+
+          <label for="category">Category:</label>
+          {{form.category|add_class:"form-control"}}
+
+          <label for="tempat">Tempat:</label>
+          {{form.tempat|add_class:"form-control"}}
+
+          <label for="alamat">Alamat:</label>
+          {{form.alamat|add_class:"form-control"}}
+
+          <label for="image">Picture:</label>
+          {{form.image|add_class:"form-control"|append_attr:"id:image_event"}}
+
+          <label for="description">Desctiption:</label>
+          {{form.description|add_class:"form-control"}}
+
+          <label for="kouta">Kuota:</label>
+          {{form.kuota|add_class:"form-control"}}
+
+          <label for="start_time">Start Time:</label>
+          {{form.start_time|add_class:"form-control"}}
+
+          <label for="end_time">End Time:</label>
+          {{form.end_time|add_class:"form-control"}}
+
+          <label for="contact_hp">Contact HP:</label>
+          {{form.contact_hp|add_class:"form-control"}}
+
+          <label for="contact_email">Contact Email:</label>
+          {{form.contact_email|add_class:"form-control"}}
+
+          <label for="contact_website">Website:</label>
+          {{form.contact_website|add_class:"form-control"}}
+          <!-- <textarea class="input-komentar" placeholder="Tuangkan opini anda disini"
+                            cols="5"></textarea> -->
+          <br>
+          <input type="submit" value="Simpan" class="btn btn-sm text-white btn-tambah float-right">
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <!-- </div> -->
+</div>

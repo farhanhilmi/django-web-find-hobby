@@ -2,12 +2,14 @@
 {% load socialaccount %}
 {% providers_media_js %}
 {% block content %}
+{% load widget_tweaks %}
+
 
 <div class="container h-100">
     <div class="d-flex justify-content-center h-100">
         <div class="user_card">
             <div class="d-flex justify-content-center ">
-                <h4 id="form-title" class="font-weight-bold">Scheduler</h4>
+                <h4 id="form-title" class="text-red-color font-weight-bold">Find Hobby</h4>
             </div>
             <div class="login_title d-flex justify-content-left">
                 <h6>Sign Up</h6>
@@ -19,12 +21,29 @@
                 <!-- REGISTER FORM -->
                 <form method="POST" action="" id="formRegister" autocomplete="off" class="needs-validation" novalidate>
                     {% csrf_token %}
+
+                    {{form.errors}}
+
+                    <div class="row mb-2">
+                        <div class="col input-group">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            {{form.first_name|add_class:"form-control firstName"|append_attr:"placeholder:First Name"}}
+                            <!-- <input type="text" class="form-control" placeholder="First name"> -->
+                        </div>
+                        <div class="col">
+                            {{form.last_name|add_class:"form-control lastName"|append_attr:"placeholder:Last Name"}}
+                        </div>
+                        <input type="hidden" name="name" id="name">
+                    </div>
+
                     <div class="input-group mb-2">
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <!-- <input type="text" name="username" placeholder="Username" class="form-control" required> -->
-                        {{form.username}}
+                        <!-- <input type="text" name="username" placeholder="Username" class="form-control" required > -->
+                        {{form.username|add_class:"form-control"|append_attr:"placeholder:Username"}}
                     </div>
 
                     <div class="input-group mb-2">
@@ -32,25 +51,8 @@
                             <span class="input-group-text"><i class="far fa-envelope"></i></span>
                         </div>
                         <!-- <input type="email" name="email" placeholder="Email" class="form-control" required> -->
-                        {{form.first_name}}
+                        {{form.email|add_class:"form-control"|append_attr:"placeholder:Email Address"}}
                     </div>
-
-                    <div class="input-group mb-2">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
-                        </div>
-                        <!-- <input type="email" name="email" placeholder="Email" class="form-control" required> -->
-                        {{form.last_name}}
-                    </div>
-
-                    <div class="input-group mb-2">
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="far fa-envelope"></i></span>
-                        </div>
-                        <!-- <input type="email" name="email" placeholder="Email" class="form-control" required> -->
-                        {{form.email}}
-                    </div>
-
 
 
                     <div class="input-group mb-0">
@@ -58,25 +60,28 @@
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
 
-                        {{form.password1}}
+                        <input type="password" id="password1" name="password1" placeholder="Enter Password"
+                            class="form-control border" required>
+                        <!-- <input type="text" id="password" name="password"> -->
                     </div>
+                    {{form.password}}
+
                     <small class="font-weight-bold mt-0" id="passLong"></small>
                     <div class="input-group mb-0 mt-2">
                         <div class="input-group-append">
                             <span class="input-group-text"><i class="fas fa-key"></i></span>
                         </div>
-                        <!-- <input type="password" id="password2" name="password2" placeholder="Re-Enter Password"
-                            class="form-control border" required> -->
-                        {{form.password2}}
+                        <input type="password" id="password2" name="password2" placeholder="Re-Enter Password"
+                            class="form-control border" required>
+                        <!-- {{form.password2}} -->
                     </div>
                     <small class="font-weight-bold" id="CheckPasswordMatch"></small>
                     <div class="d-flex justify-content-center mt-3 login_container">
-                        <input class="btn login_btn" type="submit" id="btnRegister" value="Register">
+                        <input class="btn login_btn text-white" type="submit" id="btnRegister" value="Register">
                     </div>
                     <!-- <div class="invalid-feedback" id="CheckPasswordMatch">
                         Please provide a valid city.
                     </div> -->
-                    {{form.errors}}
                     <small class="create_account form-text text-muted mb-0 mt-3 ">
                         Already have account? <a id="loginPageBtn" href="{% url 'login_page' %}">Login Here</a>
                     </small>
@@ -85,12 +90,12 @@
 
             <hr>
 
-            <div class="d-flex justify-content-center mt-3 login_container">
+            <!-- <div class="d-flex justify-content-center mt-3 login_container">
                 <a href="{% provider_login_url 'facebook' method='oauth2' %}"
                     class="btn social_login fb_login font-weight-bold ">
                     <i class="fab fa-facebook-square"></i>Log In with Facebook
                 </a>
-            </div>
+            </div> -->
             <div class="d-flex justify-content-center mt-2 login_container">
                 <a href="{% provider_login_url 'google' %}" class="btn social_login google_login font-weight-bold ">
                     <i class="fab fa-google"></i>Log In with Google
@@ -108,6 +113,11 @@
         let btnRegister = $('#btnRegister');
         let pass1 = $("#password1");
         let pass2 = $("#password2");
+
+        function checkPassword1() {
+            console.log('password1');
+        }
+
         function checkPasswordMatch() {
             var password = pass1.val();
             var confirmPassword = pass2.val();
@@ -127,13 +137,15 @@
                 $("#CheckPasswordMatch").addClass("text-success");
                 $("#CheckPasswordMatch").html("Passwords match.");
                 // btnRegister.prop('disabled', false);
+                $('#password').val(pass1.val());
+                $('#name').val($('.firstName').val() + " " + $('.lastName').val())
                 console.log(pass1.val());
                 return true
             }
         }
 
         function checkPassLong() {
-            if ($(pass1).val().length < 8) {
+            if (pass1.val().length < 8) {
                 $("#passLong").addClass("text-danger");
                 $("#passLong").html("This password is to short!. at least 8 characters");
                 return false
@@ -149,11 +161,6 @@
             $("#password2").keyup(checkPasswordMatch);
             $("#password1").keyup(checkPassLong);
 
-            if (checkPassLong() == true || checkPasswordMatch() == true) {
-                btnRegister.prop('disabled', false);
-            } else {
-                btnRegister.prop('disabled', true);
-            }
         });
 
 

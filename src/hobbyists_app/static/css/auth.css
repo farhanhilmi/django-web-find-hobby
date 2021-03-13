@@ -10,7 +10,7 @@ html {
 }
 
 .user_card {
-  width: 350px;
+  width: 550px;
   margin-top: auto;
   margin-bottom: auto;
   background: white;
@@ -18,7 +18,7 @@ html {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding: 10px;
+  padding: 30px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
     0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -46,9 +46,18 @@ hr {
 }
 
 .login_title {
-  background: black;
+  background: #f4927e;
   color: white;
-  margin: 1px -10px;
+  margin: 1px 10px;
+  border-radius: 10px;
+}
+
+.errorlist {
+  color: red;
+  font-weight: bold;
+  /* padding: 10px; */
+  background-color: #f4927e;
+  border-radius: 10px;
 }
 
 .login_title h6 {

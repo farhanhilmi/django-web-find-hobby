@@ -78,7 +78,7 @@
                                     <p class="text-secondary mb-0">HOBBY</p>
                                     <p class="mt-0">{{account.hobby}}</p>
                                 </div>
-                                <hr style="margin-left: -10px; margin-right: -5%;">
+                                <!-- <hr style="margin-left: -10px; margin-right: -5%;">
                                 <div class="phone-number">
                                     <p class="text-secondary mb-0">COMMENTS</p>
                                     <p class="mt-0">982 comments</p>
@@ -98,7 +98,7 @@
                                     <p class="text-secondary mb-0">EVENT ATTENDANCE</p>
                                     <p class="mt-0">99 times</p>
                                 </div>
-                                <hr style="margin-left: -10px; margin-right: -5%;">
+                                <hr style="margin-left: -10px; margin-right: -5%;"> -->
                             </div>
                         </div>
 
@@ -172,33 +172,44 @@
                 {% csrf_token %}
                 <div class="modal-body">
                     <!-- <input type="hidden" value="pwdChange" name="chPwd"> -->
+                    <input type="hidden" value="profileChange" name="chPwd">
                     <label for="username">Username</label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">@</span>
                         </div>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username"
-                            aria-label="Username" aria-describedby="basic-addon1">
+                        {{form_user.username|add_class:'form-control'}}
                     </div>
 
-                    <label for="name">Nama Lengkap</label>
+                    <label for="hoby">Hobby</label>
                     <div class="input-group mb-3">
-                        <input type="text" name="name" id="name" class="form-control">
+                        {{form_profile.hobby|add_class:'form-control'}}
+                    </div>
+
+                    <label for="name">Nama Depan</label>
+                    <div class="input-group mb-3">
+                        {{form_user.first_name|add_class:'form-control'}}
+                    </div>
+
+                    <label for="name">Nama Belakang</label>
+                    <div class="input-group mb-3">
+                        {{form_user.last_name|add_class:'form-control'}}
                     </div>
 
                     <label for="phone">No. HP</label>
                     <div class="input-group mb-3">
-                        <input type="text" name="phone" id="phone" class="form-control">
+                        {{form_profile.phone|add_class:'form-control'}}
                     </div>
 
                     <label for="email">Email</label>
                     <div class="input-group mb-3">
-                        <input type="text" name="email" id="email" class="form-control">
+                        {{form_user.email|add_class:'form-control'}}
                     </div>
 
                 </div>
                 <div class="">
-                    <input type="submit" class="btn btn-warning btn-sm float-right mr-3 mb-2" value="Save changes">
+                    <input type="submit" name="submit" class="btn btn-warning btn-sm float-right mr-3 mb-2"
+                        value="Save changes">
                 </div>
             </form>
         </div>

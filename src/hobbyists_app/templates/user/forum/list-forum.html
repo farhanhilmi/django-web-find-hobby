@@ -2,12 +2,6 @@
 {% load static %}
 {% load widget_tweaks %}
 {% block content %}
-<!-- 
-
-{% block javascript %}
-<script src="{% static 'js/forum.js' %}"></script>
-{% endblock %} -->
-<!-- <img src="https://wallpapercave.com/wp/wp6312868.jpg" class="img-fluid" alt="Responsive image"> -->
 
 <section class="section-pencarian" style="margin-top: 150px;">
     <form action="{% url 'pencarian_url'%}" method="POST">
@@ -107,30 +101,6 @@
 </div>
 
 
-<!-- Modal Delete-->
-<div class="modal fade" id="deleteforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Forum</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form action="{% url 'delete_forum' %}" method="post">
-                <div class="modal-body">
-                    {% csrf_token %}
-                    <input type="hidden" value="" name="id_forum" id="delForumId" />
-                    <small>Apakah anda yakin akan menghapus forum "<b id="delForumVal"></b>" ?</small>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-sm text-white btn-tambah" value="Delete">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <!-- Modal Update-->
 <div class="modal fade" id="modal-forum">

@@ -3,106 +3,115 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{page_title}}</title>
-    <link rel="icon" href="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{page_title}}</title>
+        <link rel="icon" href="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/calendar-512.png">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel=" stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
-        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
-        crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+            integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel=" stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+            integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+            crossorigin="anonymous" />
 
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+            integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        {{ form.media }}{{ form_edit.media }}
 
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-    <div class="wrapper">
-        <!--  -->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-            <div class="container">
-                <a class="navbar-brand" href="#">Find Hobbies</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-                    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <div class="wrapper">
+            <!--  -->
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+                <div class="container">
+                    <a class="navbar-brand" href="#">Find Hobbies</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'home_page' %}">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_forum' %}">Forum</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'list_event_url' %}">Event</a>
-                        </li>
-                        <!-- <li class="nav-item" style="margin-right: 0 !important;">
+                    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'home_page' %}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'list_forum' %}">Forum</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'list_event_url' %}">Event</a>
+                            </li>
+                            <!-- <li class="nav-item" style="margin-right: 0 !important;">
                             <a class="nav-link" href="#" style="color:#fe5f55;"><i
                                     class="far fa-user-circle fa-lg"></i></a>
                         </li> -->
 
-                        <li class="nav-item dropdown" style="margin-right: 0 !important;">
-                            <a style="color:#fe5f55;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="far fa-user-circle fa-lg"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item"
-                                    href="{% url 'profile_url' user.username %}">{{user.first_name}}
-                                    {{user.last_name}}</a>
-                                <a class="dropdown-item" href="{% url 'logout_page' %}">Logout</a>
-                            </div>
-                        </li>
-                    </ul>
+                            <li class="nav-item dropdown" style="margin-right: 0 !important;">
+                                <a style="color:#fe5f55;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="far fa-user-circle fa-lg"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item"
+                                        href="{% url 'profile_url' user.username %}">{{user.first_name}}
+                                        {{user.last_name}}</a>
+                                    <a class="dropdown-item" href="{% url 'logout_page' %}">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
-        <!--  -->
-        <div class="container">
-            {% if account.user_id.email == "" or account.user_id.password == "" or account.hobby == "" %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 100px;">
-                <strong>Peringatan!</strong> Anda harus segera melengkapi informasi diri anda pada profil akun.
-                <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            </nav>
+            <!--  -->
+            <div class="container">
+                {% if account.user_id.email == "" or account.user_id.password == "" or account.hobby == "" %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 100px;">
+                    <strong>Peringatan!</strong> Anda harus segera melengkapi informasi diri anda pada profil akun.
+                    <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button> -->
+                </div>
+                {% endif %}
+                {% block content %}
+
+
+                {% endblock %}
             </div>
-            {% endif %}
-            {% block content %}
-
-
-            {% endblock %}
         </div>
-    </div>
 
-    <div class="footer">
-        <div class="container">
-            <h6>farhan hilmi</h6>
+        <div class="footer">
+            <div class="container">
+                <h6>farhan hilmi</h6>
+            </div>
         </div>
-    </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/forum.js' %}"></script>
-    <script src="{% static 'js/comment.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+            crossorigin="anonymous"></script>
+        <script src="{% static 'js/main.js' %}"></script>
+        <script src="{% static 'js/forum.js' %}"></script>
+        <script src="{% static 'js/comment.js' %}"></script>
+        <script src="{% static 'js/events.js' %}"></script>
 
-    <!-- 
+        <!-- 
     {% block javascript %}
 
     {% endblock %} -->
-</body>
+    </body>
 
 </html>

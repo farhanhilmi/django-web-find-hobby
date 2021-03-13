@@ -1,4 +1,5 @@
 {% extends 'user\layout\main.html' %}
+{% load widget_tweaks %}
 
 {% block content %}
 
@@ -12,9 +13,9 @@
                 <div class="card">
                     <div class="card-body">
                         {% if frm.user_id.id == user.id %}
-                        <a class="btnForumEdit" href="#" data-url="{% url 'update_forum_url' frm.id %}"><small><i
+                        <a class="btnForumEdit" href="#" data-toggle="modal" data-target="#modalupdateforum"><small><i
                                     class="fas text-warning fa-edit"></i></small></a>
-                        <a class="btnForumDelete" href="#" data-id="{{frm.id}}" data-one="{{frm.topic}}"
+                        <a class="btnFORUMDelete" href="#" data-id="{{frm.id}}" data-one="{{frm.topic}}"
                             data-toggle="modal" data-target="#deleteforum"><small><i
                                     class="fas text-danger fa-trash"></i></small></a>
                         {% endif %}
@@ -25,6 +26,7 @@
                         <p class="mt-4">
                             {{frm.description}}
                         </p>
+
                         <a href="#" class="badge tag-forum mt-4">{{frm.category}}</a>
                         <div class="ml-1 mt-3 row">
                             <div class="comment-forum mr-3">
@@ -37,8 +39,15 @@
                                 <!-- <form action="{% url 'like_forum_url' frm.id %}" id="formLike" method="post">
                                     {% csrf_token %} -->
                                 <a id="btn_like" href="{% url 'like_forum_url' frm.id %}">
+                                    {% if sudahLike == 1 %}
                                     <i class="fas fa-heart mt-1 ml-3" style="color: #fe5f55;"></i><small
-                                        class="ml-1">{{frm.num_like}}</small>
+                                        class="ml-1">{{like_user}}</small>
+                                    {% else %}
+                                    <i class="fas fa-heart mt-1 ml-3" style="color: rgb(231, 231, 231);"></i><small
+                                        class="ml-1">{{like_user}}</small>
+                                    {% endif %}
+                                    <!-- <i class="fas fa-heart mt-1 ml-3" style="color: #fe5f55;"></i><small
+                                        class="ml-1">{{like_user}}</small> -->
                                 </a>
                                 <!-- </form> -->
 
@@ -69,6 +78,7 @@
                                 <!-- <textarea class="input-komentar" placeholder="Tuangkan opini anda disini"
                                     cols="5"></textarea> -->
                                 <br>
+                                <input type="hidden" value="addKomen" name="aksiForum">
                                 <input type="submit" value="Kirim" class="btn btn-sm btn-info btn-tambah float-right">
                             </form>
                         </div>
@@ -99,18 +109,82 @@
         </div>
 
     </div>
+</div>
 
-    <!-- Modal Update-->
-    <div class="modal fade" id="modal-forum">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-
+<!-- Modal Tambah-->
+<div class="modal fade" id="deleteforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Hapus Forum</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <form action="{% url 'hapus_forum' %}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <input type="hidden" id="idForum" value="" name="forumID">
+                    <p>Apakah anda yakin akan menghapus forum ini?</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-sm text-white btn-tambah" value="Hapus">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Update-->
+<div class="modal fade" id="modalupdateforum">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <form action="" method="POST" class="upadeteforumForm">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Forum</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="aksiForum" value="updateForum">
+                    <input type="hidden" value="{{user.id}}" name="user_id">
+                    <label for="topicVal">Topic:</label>
+                    <!-- <input type="text" class="form-control" name="topic" id="topicVal"> -->
+                    {{form_edit.topic}}
+                    <!-- <label for="catVal">Category:</label>
+                        <input type="text" class="form-control" name="category" id="catVal"> -->
+                    <label for="category">Category:</label>
+                    {{form_edit.category|add_class:"form-control"}}
+
+                    <label for="description">Description:</label>
+                    {{form_edit.description}}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm text-white btn-tambah">Update</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 </div>
+<!-- Modal Update-->
+<div class="modal fade" id="modal-forum">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
 
+        </div>
+    </div>
+</div>
 
+<script>
+    $(".btnFORUMDelete").click(function () {
+        $("#idForum").val($(this).data("id"));
+        console.log("asas");
+    });
+</script>
 
 {% endblock %}

@@ -51,7 +51,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
 
     'crispy_forms',
+    'tempus_dominus',
 ]
+
+TEMPUS_DOMINUS_LOCALIZE = True
+# TEMPUS_DOMINUS_INCLUDE_ASSETS = False
+# DATETIME_INPUT_FORMATS = ['%Y-%m-%d %I:%M %p', ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

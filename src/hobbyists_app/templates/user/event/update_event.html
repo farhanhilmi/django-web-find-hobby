@@ -1,0 +1,30 @@
+{% load widget_tweaks %}
+
+<div class="card-deck">
+  <!-- 4 of these -->
+  <div class="card">
+    <div class="card-body">
+      <button type="button" class="close float-right" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h5>Komentar</h5>
+      <hr>
+      <div class="tambah-komentar">
+        <form action="{% url 'update_event_url' form.instance.pk %}" enctype="multipart/form-data" method="POST"
+          class="upadeteCommentForm">
+          {% csrf_token %}
+
+          {{form.discuss}}
+          {{form.user_id.as_hidden}}
+          {{form.forum_id.as_hidden}}
+          <!-- <textarea class="input-komentar" placeholder="Tuangkan opini anda disini"
+                            cols="5"></textarea> -->
+          <br>
+          <input type="submit" value="Simpan" class="btn btn-sm text-white btn-tambah float-right">
+        </form>
+      </div>
+
+    </div>
+  </div>
+  <!-- </div> -->
+</div>
