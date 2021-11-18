@@ -29,12 +29,15 @@ def login_page(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-
+        print("NAME", username)
+        print("NAME", password)
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            print("LOGIN")
             return redirect('home_page')
         else:
+            print("TIDAK")
             messages.info(request, 'Username or Password Is Incorrect!')
 
     page_title = "Login | Find Hobby"
@@ -49,16 +52,17 @@ def register_page(request):
         form = FormUser(request.POST)
 
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit = False)
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
+            user.password = make_password(password)
 
             usr = User.objects.latest('id')
-
             profile = Profile(user_id=user, name=first_name + " " + last_name)
             # profile = FormUser(request.POST['name'], instance=usr)
+            user.save()
             profile.save()
             print('ZZAZ PROFILE: ', profile)
             messages.success(request, 'Account was created for ' + username)

@@ -1,3 +1,5 @@
 {
     "python.pythonPath": "../env/Scripts/python",
+    "prettier.tabWidth": 4,
+    "editor.formatOnSave": false
 }
